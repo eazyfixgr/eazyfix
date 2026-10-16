@@ -1,0 +1,303 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+import { shippingMethods, FREE_SHIPPING_THRESHOLD } from '../../data/shop';
+import { formatEuro } from '../../lib/money';
+
+const freeLabel = formatEuro(FREE_SHIPPING_THRESHOLD);
+---
+
+<ShopLayout title="Ταμείο — Κερί & Πηλός" active="cart">
+  <div class="shop-wrap">
+    <div class="shop-head" style="padding-top:40px">
+      <h1 style="font-size:2rem">Ολοκλήρωση παραγγελίας</h1>
+      <p>Συμπλήρωσε τα στοιχεία αποστολής. Η πληρωμή γίνεται με κάρτα, μέσω ασφαλούς σύνδεσης.</p>
+    </div>
+
+    <div class="checkout-grid">
+      <form class="checkout-form" id="checkout-form" novalidate>
+        <h2>Στοιχεία επικοινωνίας</h2>
+        <div class="grid-2">
+          <div class="shop-field">
+            <label for="name">Ονοματεπώνυμο *</label>
+            <input type="text" id="name" name="name" required autocomplete="name" />
+          </div>
+          <div class="shop-field">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+        </div>
+        <div class="shop-field">
+          <label for="phone">Τηλέφωνο *</label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+        </div>
+
+        <h2>Διεύθυνση αποστολής</h2>
+        <div class="shop-field">
+          <label for="address">Διεύθυνση *</label>
+          <input type="text" id="address" name="address" required autocomplete="street-address" />
+        </div>
+        <div class="grid-2">
+          <div class="shop-field">
+            <label for="city">Πόλη *</label>
+            <input type="text" id="city" name="city" required autocomplete="address-level2" />
+          </div>
+          <div class="shop-field">
+            <label for="postal">Τ.Κ. *</label>
+            <input type="text" id="postal" name="postal" required autocomplete="postal-code" />
+          </div>
+        </div>
+        <div class="shop-field">
+          <label for="notes">Σημειώσεις (προαιρετικό)</label>
+          <textarea id="notes" name="notes" rows="2" placeholder="π.χ. δώρο, οδηγίες παράδοσης..."></textarea>
+        </div>
+
+        <h2>Τρόπος αποστολής</h2>
+        <div class="ship-options">
+          {shippingMethods.map((method, index) => (
+            <label class="ship-option" data-ship-option>
+              <input
+                type="radio"
+                name="shipping"
+                value={method.id}
+                checked={index === 0}
+                data-ship-price={method.priceCents}
+                data-ship-free-over={method.freeOverCents ?? 0}
+              />
+              <span>
+                <span class="ship-name">{method.name}</span>
+                <span class="ship-desc">{method.description}</span>
+              </span>
+              <span class="ship-price">
+                {method.priceCents === 0
+                  ? 'Δωρεάν'
+                  : method.freeOverCents
+                    ? `Δωρεάν άνω των ${formatEuro(method.freeOverCents)}`
+                    : formatEuro(method.priceCents)}
+              </span>
+            </label>
+          ))}
+        </div>
+
+        <div class="form-msg" id="form-msg"></div>
+
+        <button type="submit" class="shop-btn shop-btn--fill shop-btn--block" id="pay-btn" style="margin-top:18px">
+          Πληρωμή με κάρτα
+        </button>
+        <p style="text-align:center;font-size:0.8rem;color:#9a8778;margin:10px 0 0">
+          Ασφαλείς πληρωμές μέσω Stripe. Δεν αποθηκεύουμε στοιχεία κάρτας.
+        </p>
+      </form>
+
+      <aside class="summary">
+        <h2>Η παραγγελία σου</h2>
+        <div id="order-items"><p class="shop-loading">Φόρτωση...</p></div>
+
+        <div class="coupon-row">
+          <input type="text" id="coupon" placeholder="Κωδικός έκπτωσης" />
+          <button type="button" class="shop-btn shop-btn--line shop-btn--sm" id="apply-coupon">Εφαρμογή</button>
+        </div>
+        <div class="coupon-msg" id="coupon-msg"></div>
+
+        <div class="summary-row">
+          <span>Υποσύνολο</span>
+          <span id="co-subtotal">—</span>
+        </div>
+        <div class="summary-row discount" id="discount-row" hidden>
+          <span>Έκπτωση</span>
+          <span id="co-discount">—</span>
+        </div>
+        <div class="summary-row">
+          <span>Μεταφορικά</span>
+          <span id="co-shipping">—</span>
+        </div>
+        <div class="summary-total">
+          <span>Σύνολο</span>
+          <span id="co-total">—</span>
+        </div>
+        <p style="font-size:0.8rem;color:#9a8778;margin:0">
+          Δωρεάν αποστολή άνω των {freeLabel}.
+        </p>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    import { shop, formatEuro } from '../../scripts/shop.js';
+
+    let discountCents = 0;
+    let couponCode = '';
+
+    const itemsEl = document.getElementById('order-items')!;
+    const subtotalEl = document.getElementById('co-subtotal')!;
+    const discountRow = document.getElementById('discount-row')!;
+    const discountEl = document.getElementById('co-discount')!;
+    const shippingEl = document.getElementById('co-shipping')!;
+    const totalEl = document.getElementById('co-total')!;
+    const form = document.getElementById('checkout-form') as HTMLFormElement;
+    const msgEl = document.getElementById('form-msg')!;
+    const payBtn = document.getElementById('pay-btn') as HTMLButtonElement;
+
+    function selectedShipping() {
+      const radio = form.querySelector<HTMLInputElement>('input[name="shipping"]:checked');
+      if (!radio) return { price: 0, freeOver: 0 };
+      return {
+        price: Number(radio.dataset.shipPrice || 0),
+        freeOver: Number(radio.dataset.shipFreeOver || 0),
+      };
+    }
+
+    function shippingCost() {
+      const subtotal = shop.subtotalCents();
+      const { price, freeOver } = selectedShipping();
+      if (freeOver > 0 && subtotal >= freeOver) return 0;
+      if (subtotal === 0) return 0;
+      return price;
+    }
+
+    function recalc() {
+      const subtotal = shop.subtotalCents();
+      const shipping = shippingCost();
+      const total = Math.max(0, subtotal - discountCents) + shipping;
+      subtotalEl.textContent = formatEuro(subtotal);
+      shippingEl.textContent = shipping === 0 ? 'Δωρεάν' : formatEuro(shipping);
+      discountRow.hidden = discountCents === 0;
+      discountEl.textContent = `− ${formatEuro(discountCents)}`;
+      totalEl.textContent = formatEuro(total);
+      return { subtotal, shipping, total };
+    }
+
+    function renderItems() {
+      const items = shop.items;
+      if (items.length === 0) {
+        itemsEl.innerHTML = `<p class="shop-loading">Το καλάθι είναι άδειο. <a href="/shop">Δες τη συλλογή</a></p>`;
+        return;
+      }
+      itemsEl.innerHTML = items
+        .map(
+          (item) =>
+            `<div class="summary-row"><span>${item.quantity}× ${item.name}${
+              item.variantName ? ` (${item.variantName})` : ''
+            }</span><span>${formatEuro(item.priceCents * item.quantity)}</span></div>`
+        )
+        .join('');
+    }
+
+    function markShipping() {
+      form.querySelectorAll('[data-ship-option]').forEach((label) => {
+        const radio = label.querySelector('input');
+        label.classList.toggle('selected', Boolean(radio?.checked));
+      });
+    }
+
+    form.addEventListener('change', (event) => {
+      if ((event.target as HTMLElement).matches('input[name="shipping"]')) {
+        markShipping();
+        recalc();
+      }
+    });
+
+    document.getElementById('apply-coupon')?.addEventListener('click', async () => {
+      const input = document.getElementById('coupon') as HTMLInputElement;
+      const msg = document.getElementById('coupon-msg')!;
+      const code = input.value.trim();
+      if (!code) {
+        msg.textContent = 'Δώσε έναν κωδικό.';
+        msg.className = 'coupon-msg err';
+        return;
+      }
+      msg.textContent = 'Έλεγχος...';
+      msg.className = 'coupon-msg';
+      try {
+        const res = await fetch('/api/shop/coupon', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, subtotalCents: shop.subtotalCents() }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          discountCents = data.discountCents;
+          couponCode = code.toUpperCase();
+          msg.textContent = `Ο κωδικός ${couponCode} εφαρμόστηκε.`;
+          msg.className = 'coupon-msg ok';
+        } else {
+          discountCents = 0;
+          couponCode = '';
+          msg.textContent = data.message || 'Μη έγκυρος κωδικός.';
+          msg.className = 'coupon-msg err';
+        }
+      } catch {
+        msg.textContent = 'Σφάλμα επικοινωνίας.';
+        msg.className = 'coupon-msg err';
+      }
+      recalc();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      msgEl.textContent = '';
+
+      const items = shop.items;
+      if (items.length === 0) {
+        msgEl.textContent = 'Το καλάθι είναι άδειο.';
+        return;
+      }
+      if (!form.reportValidity()) return;
+
+      const formData = new FormData(form);
+      const shipping = selectedShipping();
+      const totals = recalc();
+      const shippingRadio = form.querySelector<HTMLInputElement>('input[name="shipping"]:checked');
+
+      payBtn.disabled = true;
+      payBtn.textContent = 'Ανακατεύθυνση...';
+
+      try {
+        const res = await fetch('/api/shop/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customer: {
+              name: formData.get('name'),
+              email: formData.get('email'),
+              phone: formData.get('phone'),
+              address: formData.get('address'),
+              city: formData.get('city'),
+              postalCode: formData.get('postal'),
+              notes: formData.get('notes') || '',
+            },
+            shippingMethod: shippingRadio?.value || '',
+            coupon: couponCode,
+            items: items.map((item) => ({
+              productId: item.productId,
+              variantId: item.variantId,
+              name: item.name,
+              variantName: item.variantName,
+              unitPriceCents: item.priceCents,
+              quantity: item.quantity,
+            })),
+          }),
+        });
+        const data = await res.json();
+        if (res.ok && data.url) {
+          window.location.href = data.url;
+          return;
+        }
+        msgEl.textContent = data.message || 'Κάτι πήγε λάθος. Δοκίμασε ξανά.';
+      } catch {
+        msgEl.textContent = 'Σφάλμα επικοινωνίας. Δοκίμασε ξανά.';
+      }
+      payBtn.disabled = false;
+      payBtn.textContent = 'Πληρωμή με κάρτα';
+      void shipping;
+      void totals;
+    });
+
+    renderItems();
+    markShipping();
+    recalc();
+    window.addEventListener('cart:change', () => {
+      renderItems();
+      recalc();
+    });
+  </script>
+</ShopLayout>

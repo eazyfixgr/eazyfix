@@ -1,0 +1,14 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+---
+
+<ShopLayout title="Η πληρωμή ακυρώθηκε — Κερί & Πηλός" active="cart">
+  <div class="shop-result">
+    <h1>Η πληρωμή δεν ολοκληρώθηκε</h1>
+    <p>Δεν χρεώθηκες. Μπορείς να δοκιμάσεις ξανά — το καλάθι σου είναι εδώ.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px">
+      <a class="shop-btn shop-btn--fill" href="/shop/checkout">Προσπάθησε ξανά</a>
+      <a class="shop-btn shop-btn--line" href="/shop">Πίσω στη συλλογή</a>
+    </div>
+  </div>
+</ShopLayout>

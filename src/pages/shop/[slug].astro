@@ -1,0 +1,126 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+import { getProductBySlug } from '../../lib/shop';
+import { formatEuro } from '../../lib/money';
+import { categoryName, toneFor } from '../../data/shop';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+const product = await getProductBySlug(slug ?? '');
+if (!product) {
+  return new Response('Not found', { status: 404 });
+}
+
+const tone = toneFor(product.slug);
+const hasVariants = product.variants.length > 0;
+const firstStock = product.variants[0]?.stock ?? 0;
+---
+
+<ShopLayout title={`${product.name} — Κερί & Πηλός`} description={product.description}>
+  <div class="shop-wrap">
+    <div class="shop-breadcrumb">
+      <a href="/shop">Συλλογή</a> / <a href={`/shop?cat=${product.category}`}>{categoryName(product.category)}</a> /
+      <span> {product.name}</span>
+    </div>
+
+    <div class="shop-detail">
+      <div class={`shop-gallery tone-${tone}`}>
+        {product.imageKey ? (
+          <img src={`/media/${product.imageKey}`} alt={product.name} />
+        ) : (
+          <span class="pflame" aria-hidden="true"></span>
+        )}
+      </div>
+
+      <div class="shop-info">
+        <span class="shop-badge">{categoryName(product.category)}</span>
+        <h1 style="font-size:2rem;margin:14px 0 0">{product.name}</h1>
+        <div class="shop-price" data-price-display>
+          {formatEuro(product.variants[0]?.priceCents ?? product.priceCents)}
+        </div>
+        <p>{product.description}</p>
+
+        {hasVariants && (
+          <div class="shop-field">
+            <label for="variant">Επιλογή</label>
+            <select id="variant" data-variant-select>
+              {product.variants.map((variant) => (
+                <option
+                  value={variant.id}
+                  data-price={variant.priceCents ?? product.priceCents}
+                  data-name={variant.name}
+                  data-stock={variant.stock}
+                >
+                  {variant.name} — {formatEuro(variant.priceCents ?? product.priceCents)}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <div class="shop-buy-row">
+          <div class="shop-qty">
+            <button type="button" data-qty-dec aria-label="Μείωση">−</button>
+            <input type="number" min="1" value="1" data-qty-input aria-label="Ποσότητα" />
+            <button type="button" data-qty-inc aria-label="Αύξηση">+</button>
+          </div>
+          <button
+            type="button"
+            class="shop-btn shop-btn--fill"
+            data-add-to-cart
+            data-product-id={product.id}
+            data-variant-id={product.variants[0]?.id ?? ''}
+            data-variant-name={product.variants[0]?.name ?? ''}
+            data-price-cents={product.variants[0]?.priceCents ?? product.priceCents}
+            data-slug={product.slug}
+            data-name={product.name}
+          >
+            Προσθήκη στο καλάθι
+          </button>
+        </div>
+
+        <div class="shop-stock" data-stock-display>
+          {firstStock > 0 ? `Διαθέσιμο (${firstStock} τεμάχια)` : 'Σε έλλειψη'}
+        </div>
+
+        <ul class="shop-hero-facts" style="margin-top:24px;border-top:1px solid var(--line);padding-top:20px">
+          <li><strong>Φυσικά</strong> υλικά</li>
+          <li><strong>Χειροποίητο</strong> ένα-ένα</li>
+          <li><strong>Αποστολή</strong> σε όλη την Ελλάδα</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const select = document.querySelector('[data-variant-select]') as HTMLSelectElement | null;
+    const priceDisplay = document.querySelector('[data-price-display]');
+    const stockDisplay = document.querySelector('[data-stock-display]');
+    const qtyInput = document.querySelector('[data-qty-input]') as HTMLInputElement | null;
+
+    function euro(cents: number) {
+      return new Intl.NumberFormat('el-GR', { style: 'currency', currency: 'EUR' }).format(cents / 100);
+    }
+
+    function syncVariant() {
+      if (!select) return;
+      const option = select.options[select.selectedIndex];
+      const price = Number(option.dataset.price || 0);
+      const stock = Number(option.dataset.stock || 0);
+      if (priceDisplay) priceDisplay.textContent = euro(price);
+      if (stockDisplay) {
+        stockDisplay.textContent = stock > 0 ? `Διαθέσιμο (${stock} τεμάχια)` : 'Σε έλλειψη';
+      }
+    }
+
+    select?.addEventListener('change', syncVariant);
+
+    document.querySelector('[data-qty-dec]')?.addEventListener('click', () => {
+      if (qtyInput) qtyInput.value = String(Math.max(1, Number(qtyInput.value) - 1));
+    });
+    document.querySelector('[data-qty-inc]')?.addEventListener('click', () => {
+      if (qtyInput) qtyInput.value = String(Number(qtyInput.value) + 1);
+    });
+  </script>
+</ShopLayout>

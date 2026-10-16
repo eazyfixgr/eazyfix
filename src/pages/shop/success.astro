@@ -1,0 +1,23 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+
+const reference = Astro.url.searchParams.get('ref') ?? '';
+---
+
+<ShopLayout title="Ευχαριστούμε! — Κερί & Πηλός" active="cart">
+  <div class="shop-result">
+    <div class="tick" aria-hidden="true">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>
+    </div>
+    <h1>Η παραγγελία σου καταχωρήθηκε!</h1>
+    <p>Ευχαριστούμε για την αγορά σου. Θα λάβεις email επιβεβαίωσης σύντομα.</p>
+    {reference && <div class="shop-ref">Αρ. παραγγελίας: {reference}</div>}
+    <p>Το εργαστήρι ετοιμάζει τα κεριά σου με προσοχή. Θα ενημερωθείς με email όταν αποσταλούν.</p>
+    <a class="shop-btn shop-btn--fill" href="/shop">Συνέχεια αγορών</a>
+  </div>
+
+  <script>
+    import { shop } from '../../scripts/shop.js';
+    shop.clear();
+  </script>
+</ShopLayout>

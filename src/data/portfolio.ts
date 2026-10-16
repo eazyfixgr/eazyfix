@@ -84,6 +84,24 @@ export const categories: Category[] = [
     tech: ['Kotlin', 'Canvas', 'Jetpack Compose', 'Game design'],
   },
   {
+    slug: 'web-games',
+    icon: 'globe',
+    title: { el: 'Παιχνίδια Web', en: 'Web Games' },
+    short: {
+      el: 'Παιχνίδια που παίζουν απευθείας στον browser — χωρίς εγκατάσταση.',
+      en: 'Games that play directly in the browser — no install needed.',
+    },
+    description: {
+      el: 'Παιχνίδια φτιαγμένα για browser (HTML/JS, Three.js, PWA). Παίζουν άμεσα σε κινητό ή υπολογιστή, χωρίς εγκατάσταση — απλώς άνοιξε τον σύνδεσμο και παίξε.',
+      en: 'Games built for the browser (HTML/JS, Three.js, PWA). They run instantly on phone or desktop, with no installation — just open the link and play.',
+    },
+    highlights: {
+      el: ['Παίζουν στον browser', 'Χωρίς εγκατάσταση', 'Mobile-friendly', 'Three.js & PWA'],
+      en: ['Play in the browser', 'No installation', 'Mobile-friendly', 'Three.js & PWA'],
+    },
+    tech: ['JavaScript', 'Three.js', 'PWA'],
+  },
+  {
     slug: 'windows-apps',
     icon: 'monitor',
     title: { el: 'Εφαρμογές Windows & Python', en: 'Windows & Python Apps' },

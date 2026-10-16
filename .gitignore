@@ -18,6 +18,10 @@ pnpm-debug.log*
 .env.production
 .dev.vars
 
+# secrets / local access info (never commit)
+ACCESS.md
+CREDENTIALS.md
+
 # cloudflare / wrangler
 .wrangler/
 

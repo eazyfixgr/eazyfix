@@ -1,0 +1,145 @@
+---
+import ShopLayout from '../../layouts/ShopLayout.astro';
+import { listProducts, ensureShopSeeded } from '../../lib/shop';
+import { formatEuro } from '../../lib/money';
+import { shopCategories, categoryName, SHOP_BRAND } from '../../data/shop';
+
+export const prerender = false;
+
+await ensureShopSeeded();
+const allProducts = await listProducts(true);
+
+const activeCat = Astro.url.searchParams.get('cat') ?? '';
+const products = activeCat
+  ? allProducts.filter((product) => product.category === activeCat)
+  : allProducts;
+
+function defaultOffer(product: (typeof allProducts)[number]) {
+  const variant = product.variants[0];
+  return {
+    variantId: variant?.id ?? 0,
+    variantName: variant?.name ?? '',
+    price: variant?.priceCents ?? product.priceCents,
+    stock: variant?.stock ?? 0,
+  };
+}
+---
+
+<ShopLayout title={`${SHOP_BRAND} — Συλλογή`}>
+  <section class="shop-hero">
+    <div class="shop-wrap">
+      <span class="hand">χειροποίητα, με αγάπη</span>
+      <h1>Κεριά από φυσικό κερί, φτιαγμένα στο εργαστήρι μας</h1>
+      <p>
+        Μικρές παρτίδες, φυσικά αρώματα και πήλινες κατασκευές. Κάθε κομμάτι περνά από τα χέρια μας,
+        για να φέρει ζεστασιά στον χώρο σου.
+      </p>
+      <ul class="shop-hero-facts">
+        <li><strong>100%</strong> φυσικά υλικά</li>
+        <li><strong>Από {formatEuro(1200)}</strong> η συλλογή</li>
+        <li><strong>Χειροποίητο</strong> ένα-ένα</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="shop-section" id="collection">
+    <div class="shop-wrap">
+      <div class="shop-head">
+        <h2>Διαλέξτε το κερί σας</h2>
+        <p>Φυσικά αρώματα και πήλινες κατασκευές, φτιαγμένα σε μικρές παρτίδες.</p>
+      </div>
+
+      <div class="shop-filters">
+        <a href="/shop" class={activeCat === '' ? 'active' : ''}>Όλα</a>
+        {shopCategories.map((category) => (
+          <a
+            href={`/shop?cat=${category.slug}`}
+            class={activeCat === category.slug ? 'active' : ''}
+          >
+            {category.name}
+          </a>
+        ))}
+      </div>
+
+      {products.length === 0 ? (
+        <div class="shop-empty">
+          <h2>Δεν βρέθηκαν προϊόντα</h2>
+          <p>Δοκιμάστε άλλη κατηγορία.</p>
+          <a class="shop-btn shop-btn--fill" href="/shop">Όλη η συλλογή</a>
+        </div>
+      ) : (
+        <div class="shop-grid">
+          {products.map((product) => {
+            const offer = defaultOffer(product);
+            return (
+              <article class="shop-card">
+                <a class="shop-thumb" href={`/shop/${product.slug}`}>
+                  {product.imageKey ? (
+                    <img src={`/media/${product.imageKey}`} alt={product.name} loading="lazy" />
+                  ) : (
+                    <span class="pflame" aria-hidden="true"></span>
+                  )}
+                  {product.featured && <span class="shop-badge">Δημοφιλές</span>}
+                </a>
+                <div class="shop-card-body">
+                  <h3><a href={`/shop/${product.slug}`}>{product.name}</a></h3>
+                  <span class="shop-card-meta">{categoryName(product.category)}</span>
+                  <div class="shop-card-foot">
+                    <span class="shop-price">{formatEuro(offer.price)}</span>
+                    <button
+                      type="button"
+                      class="shop-add"
+                      data-add-to-cart
+                      data-product-id={product.id}
+                      data-variant-id={offer.variantId}
+                      data-variant-name={offer.variantName}
+                      data-price-cents={offer.price}
+                      data-slug={product.slug}
+                      data-name={product.name}
+                    >
+                      Προσθήκη
+                    </button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="shop-section" id="story" style="background: var(--cream-2);">
+    <div class="shop-wrap">
+      <div class="shop-head">
+        <h2>Ξεκίνησε από ένα τραπέζι γεμάτο κερί</h2>
+        <p>
+          Η <strong>{SHOP_BRAND}</strong> γεννήθηκε από την αγάπη για το χειροποίητο. Κάθε κερί και κάθε
+          κατασκευή περνά από τα χέρια μας — χωρίς μαζική παραγωγή, με προσοχή στη λεπτομέρεια.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shop-section" id="process">
+    <div class="shop-wrap">
+      <div class="shop-head">
+        <h2>Από το κερί στο σπίτι σου</h2>
+      </div>
+      <div class="shop-grid">
+        {[
+          { t: 'Επιλογή υλικών', d: 'Φυσικό κερί σόγιας και βαμβακερό φυτίλι.' },
+          { t: 'Χύτευση στο χέρι', d: 'Κάθε κερί φτιάχνεται σε μικρές παρτίδες.' },
+          { t: 'Συσκευασία & αποστολή', d: 'Με προσοχή, έτοιμο να χαρίσεις.' },
+        ].map((step) => (
+          <div class="shop-card">
+            <div class="shop-card-body">
+              <h3>{step.t}</h3>
+              <p style="color:#6b5849;margin:6px 0 0">{step.d}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</ShopLayout>
