@@ -11,24 +11,6 @@ export interface Category {
 
 export const categories: Category[] = [
   {
-    slug: 'repairs',
-    icon: 'wrench',
-    title: { el: 'Service Ηλεκτρονικών', en: 'Electronics Repair' },
-    short: {
-      el: 'Επισκευές υπολογιστών, λάπτοπ και κινητών, με επίσκεψη στον χώρο σας.',
-      en: 'Computer, laptop and phone repairs, on-site at your place.',
-    },
-    description: {
-      el: 'Αναλαμβάνω επισκευές σε υπολογιστές, λάπτοπ, κινητά και tablets. Έρχομαι σε σπίτι ή επιχείρηση, κάνω δωρεάν διάγνωση και σας δίνω τιμή πριν ξεκινήσω. Ιδανικό για όσους δεν μπορούν να μετακινήσουν τη συσκευή τους ή θέλουν γρήγορη εξυπηρέτηση.',
-      en: 'I repair computers, laptops, phones and tablets. I come to your home or business, diagnose for free and give you a price before starting. Ideal if you cannot move your device or need fast service.',
-    },
-    highlights: {
-      el: ['Επίσκεψη σε σπίτι ή επιχείρηση', 'Δωρεάν διάγνωση βλάβης', 'Εγγύηση 30 ημερών', 'Γρήγορη παράδοση 24–48 ωρών'],
-      en: ['Home or business visit', 'Free fault diagnosis', '30-day warranty', 'Fast 24–48h turnaround'],
-    },
-    tech: ['Hardware', 'Windows', 'Δίκτυα', 'Ανάκτηση δεδομένων'],
-  },
-  {
     slug: 'websites',
     icon: 'code',
     title: { el: 'Κατασκευή Ιστοσελίδων', en: 'Website Development' },
@@ -118,6 +100,24 @@ export const categories: Category[] = [
       en: ['Python tools & automation', 'Backup & file management', 'Video/image/PDF processing', 'AI tools & local models'],
     },
     tech: ['Python', 'Windows', 'AI/LLM', 'ESP32', 'Raspberry Pi'],
+  },
+  {
+    slug: 'repairs',
+    icon: 'wrench',
+    title: { el: 'Service Ηλεκτρονικών', en: 'Electronics Repair' },
+    short: {
+      el: 'Επισκευές υπολογιστών, λάπτοπ και κινητών, με επίσκεψη στον χώρο σας.',
+      en: 'Computer, laptop and phone repairs, on-site at your place.',
+    },
+    description: {
+      el: 'Αναλαμβάνω επισκευές σε υπολογιστές, λάπτοπ, κινητά και tablets. Έρχομαι σε σπίτι ή επιχείρηση, κάνω δωρεάν διάγνωση και σας δίνω τιμή πριν ξεκινήσω. Ιδανικό για όσους δεν μπορούν να μετακινήσουν τη συσκευή τους ή θέλουν γρήγορη εξυπηρέτηση.',
+      en: 'I repair computers, laptops, phones and tablets. I come to your home or business, diagnose for free and give you a price before starting. Ideal if you cannot move your device or need fast service.',
+    },
+    highlights: {
+      el: ['Επίσκεψη σε σπίτι ή επιχείρηση', 'Δωρεάν διάγνωση βλάβης', 'Εγγύηση 30 ημερών', 'Γρήγορη παράδοση 24–48 ωρών'],
+      en: ['Home or business visit', 'Free fault diagnosis', '30-day warranty', 'Fast 24–48h turnaround'],
+    },
+    tech: ['Hardware', 'Windows', 'Δίκτυα', 'Ανάκτηση δεδομένων'],
   },
 ];
 
