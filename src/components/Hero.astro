@@ -74,7 +74,7 @@ const { hero, locale } = Astro.props;
 
   .hero-inner {
     position: relative;
-    max-width: 860px;
+    max-width: 1040px;
   }
 
   .hero-badge {
@@ -101,11 +101,15 @@ const { hero, locale } = Astro.props;
 
   .hero-title {
     color: #fff;
-    font-size: clamp(2.3rem, 5.4vw, 3.9rem);
+    font-size: clamp(2.1rem, 4.5vw, 3.4rem);
+    line-height: 1.1;
+    text-wrap: balance;
+    margin-inline: auto;
   }
 
   .hero-title .accent {
     display: block;
+    text-wrap: balance;
     background: linear-gradient(100deg, #a5b4fc, #67e8f9);
     -webkit-background-clip: text;
     background-clip: text;
