@@ -88,7 +88,13 @@ function slugify(text) {
 function setPath(obj, path, value) {
   const keys = path.split('.');
   let current = obj;
-  for (let i = 0; i < keys.length - 1; i++) current = current[keys[i]];
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i];
+    if (current[key] === undefined || current[key] === null) {
+      current[key] = /^\d+$/.test(keys[i + 1]) ? [] : {};
+    }
+    current = current[key];
+  }
   current[keys[keys.length - 1]] = value;
 }
 
@@ -316,6 +322,28 @@ function renderEditor() {
     )
     .join('');
 
+  const pricingPlans = [0, 1]
+    .map((index) => {
+      const plan = project.pricing?.plans?.[index] ?? {};
+      const name = plan.name ?? { el: '', en: '' };
+      const badge = plan.badge ?? { el: '', en: '' };
+      const note = plan.note ?? { el: '', en: '' };
+      return `<div class="mini-card">
+        <div class="mini-card-head"><strong>Πακέτο ${index + 1}</strong></div>
+        <div class="grid-2">
+          ${bi('Όνομα πακέτου', `pricing.plans.${index}.name`, name)}
+          ${bi('Badge (προαιρετικό)', `pricing.plans.${index}.badge`, badge)}
+        </div>
+        <div class="grid-2">
+          ${field('Εφάπαξ (π.χ. 990 €)', `pricing.plans.${index}.setup`, plan.setup ?? '')}
+          ${field('Μηνιαία (π.χ. 69 €)', `pricing.plans.${index}.monthly`, plan.monthly ?? '')}
+        </div>
+        ${bi('Σημείωση', `pricing.plans.${index}.note`, note)}
+        <label class="switch"><input type="checkbox" data-path="pricing.plans.${index}.highlight" ${plan.highlight ? 'checked' : ''} /> Ξεχωριστό (προσφορά)</label>
+      </div>`;
+    })
+    .join('');
+
   return `<div class="panel">
     <div class="editor-head">
       <h2>${state.isNew ? 'Νέο project' : 'Επεξεργασία project'}</h2>
@@ -361,6 +389,51 @@ function renderEditor() {
       <div class="bi-row">
         <div class="bi"><span class="flag">EL</span><textarea rows="4" data-path="features.el" data-type="lines">${esc((project.features?.el || []).join('\n'))}</textarea></div>
         <div class="bi"><span class="flag">EN</span><textarea rows="4" data-path="features.en" data-type="lines">${esc((project.features?.en || []).join('\n'))}</textarea></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Πλούσια παρουσίαση (προαιρετικά)</h2>
+      <p class="hint">Για projects που θέλουν εκτενή παρουσίαση (π.χ. μεσιτικό σύστημα). Αν αφήσεις κενά, οι ενότητες δεν εμφανίζονται.</p>
+
+      <h3>SEO</h3>
+      ${bi('SEO title', 'seo.title', project.seo?.title ?? { el: '', en: '' })}
+      ${bi('SEO description', 'seo.description', project.seo?.description ?? { el: '', en: '' }, true)}
+      ${bi('SEO keywords', 'seo.keywords', project.seo?.keywords ?? { el: '', en: '' })}
+
+      <h3>Εικονίδια δυνατοτήτων</h3>
+      ${field('Icons (με κόμμα, ίδια σειρά με τα βασικά σημεία)', 'featureIcons', (project.featureIcons || []).join(', '), 'text', 'data-type="list"')}
+      <p class="hint">π.χ. layout, search, sliders, map, globe, heart, file-text, git-compare, users, devices, zap, wrench</p>
+
+      <h3>Τιμοκατάλογος</h3>
+      ${bi('Eyebrow', 'pricing.eyebrow', project.pricing?.eyebrow ?? { el: '', en: '' })}
+      ${bi('Τίτλος ενότητας', 'pricing.title', project.pricing?.title ?? { el: '', en: '' })}
+      ${bi('Υπότιτλος', 'pricing.lead', project.pricing?.lead ?? { el: '', en: '' }, true)}
+      ${pricingPlans}
+      <div class="field"><label>Τι περιλαμβάνει η μηνιαία (μία ανά γραμμή)</label>
+        <div class="bi-row">
+          <div class="bi"><span class="flag">EL</span><textarea rows="5" data-path="pricing.includes.el" data-type="lines">${esc((project.pricing?.includes?.el || []).join('\n'))}</textarea></div>
+          <div class="bi"><span class="flag">EN</span><textarea rows="5" data-path="pricing.includes.en" data-type="lines">${esc((project.pricing?.includes?.en || []).join('\n'))}</textarea></div>
+        </div>
+      </div>
+      ${bi('Υποσημείωση (ΦΠΑ κ.λπ.)', 'pricing.footnote', project.pricing?.footnote ?? { el: '', en: '' }, true)}
+
+      <h3>Υπηρεσία μεταφοράς αγγελιών</h3>
+      ${bi('Τίτλος', 'service.title', project.service?.title ?? { el: '', en: '' })}
+      ${bi('Κείμενο', 'service.body', project.service?.body ?? { el: '', en: '' }, true)}
+      ${bi('Τιμή', 'service.priceLabel', project.service?.priceLabel ?? { el: '', en: '' })}
+      ${bi('Σημείωση', 'service.note', project.service?.note ?? { el: '', en: '' }, true)}
+
+      <h3>Τελικό CTA</h3>
+      ${bi('Τίτλος', 'cta.title', project.cta?.title ?? { el: '', en: '' })}
+      ${bi('Κείμενο', 'cta.body', project.cta?.body ?? { el: '', en: '' }, true)}
+      <div class="grid-2">
+        ${bi('Κουμπί 1 — κείμενο', 'cta.primary.label', project.cta?.primary?.label ?? { el: '', en: '' })}
+        ${field('Κουμπί 1 — URL', 'cta.primary.href', project.cta?.primary?.href ?? '')}
+      </div>
+      <div class="grid-2">
+        ${bi('Κουμπί 2 — κείμενο', 'cta.secondary.label', project.cta?.secondary?.label ?? { el: '', en: '' })}
+        ${field('Κουμπί 2 — URL (contact = φόρμα επικοινωνίας)', 'cta.secondary.href', project.cta?.secondary?.href ?? '')}
       </div>
     </div>
 

@@ -17,14 +17,38 @@ if (!project) {
 const business = await getBusiness();
 const category = getCategoryMeta(project.category);
 const locale = 'en';
+
+const seoTitle = project.seo?.title?.en || `${project.name} — EazyFix`;
+const seoDescription = project.seo?.description?.en || project.description.en;
+const jsonLd = project.pricing
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Real estate website development',
+      serviceType: 'Website development for real estate agencies',
+      description: seoDescription,
+      url: `https://eazyfix.gr/en/projects/${project.slug}`,
+      provider: { '@type': 'Organization', name: 'EazyFix', url: 'https://eazyfix.gr' },
+      areaServed: { '@type': 'Country', name: 'Greece' },
+      offers: project.pricing.plans.map((plan) => ({
+        '@type': 'Offer',
+        name: plan.name.en,
+        price: plan.setup.replace(/[^\d.,]/g, '').replace(',', '.'),
+        priceCurrency: 'EUR',
+        availability: 'https://schema.org/InStock',
+      })),
+    }
+  : null;
+const jsonLdJson = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : '';
 ---
 
 <Layout
-  title={`${project.name} — EazyFix`}
-  description={project.description.en}
+  title={seoTitle}
+  description={seoDescription}
   image={project.screenshots?.[0]}
   locale={locale}
   business={business}
 >
   <ProjectDetail project={project} category={category} locale={locale} phone={business.phone} />
+  {jsonLdJson && <script type="application/ld+json" set:html={jsonLdJson} />}
 </Layout>

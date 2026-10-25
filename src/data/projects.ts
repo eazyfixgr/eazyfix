@@ -1,3 +1,41 @@
+export interface PricingPlan {
+  name: { el: string; en: string };
+  badge?: { el: string; en: string };
+  setup: string;
+  monthly: string;
+  highlight?: boolean;
+  note?: { el: string; en: string };
+}
+
+export interface PricingBlock {
+  eyebrow?: { el: string; en: string };
+  title: { el: string; en: string };
+  lead?: { el: string; en: string };
+  plans: PricingPlan[];
+  includes?: { el: string[]; en: string[] };
+  footnote?: { el: string; en: string };
+}
+
+export interface ServiceBlock {
+  title: { el: string; en: string };
+  body: { el: string; en: string };
+  priceLabel: { el: string; en: string };
+  note?: { el: string; en: string };
+}
+
+export interface CtaBlock {
+  title: { el: string; en: string };
+  body: { el: string; en: string };
+  primary: { label: { el: string; en: string }; href: string };
+  secondary?: { label: { el: string; en: string }; href: string };
+}
+
+export interface SeoBlock {
+  title?: { el: string; en: string };
+  description?: { el: string; en: string };
+  keywords?: { el: string; en: string };
+}
+
 export interface Project {
   id: string;
   slug: string;
@@ -15,6 +53,11 @@ export interface Project {
   downloadName?: string;
   downloadSize?: number;
   screenshots: string[];
+  featureIcons?: string[];
+  pricing?: PricingBlock;
+  service?: ServiceBlock;
+  cta?: CtaBlock;
+  seo?: SeoBlock;
 }
 
 const empty = { el: '', en: '' };

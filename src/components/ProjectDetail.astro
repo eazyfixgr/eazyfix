@@ -42,6 +42,21 @@ const shotsJson = JSON.stringify(shots).replace(/</g, '\\u003c');
 const body = project.body?.[locale] || project.description[locale];
 const features = project.features?.[locale] ?? [];
 const categoryTitle = category?.title[locale] ?? '';
+const pricing = project.pricing;
+const service = project.service;
+const cta = project.cta;
+const plans = (pricing?.plans ?? []).filter(
+  (plan) => Boolean(plan && plan.name && (plan.name[locale] || plan.setup || plan.monthly))
+);
+const showPricing = Boolean(pricing && pricing.title?.[locale] && plans.length > 0);
+const showService = Boolean(service && service.title?.[locale] && service.body?.[locale]);
+const showCta = Boolean(cta && cta.title?.[locale] && cta.body?.[locale]);
+const hasRich = showPricing || showService || showCta;
+const showSidebarFeatures = features.length > 0 && !hasRich;
+const fallbackIcons = ['layout', 'search', 'sliders', 'map', 'globe', 'heart', 'file-text', 'git-compare', 'users', 'devices', 'zap', 'wrench'];
+const featureIcon = (index: number) => project.featureIcons?.[index] || fallbackIcons[index % fallbackIcons.length];
+const contactHref = locale === 'en' ? '/en/#contact' : '/el/#contact';
+const resolveHref = (href?: string) => (!href || href === 'contact' ? contactHref : href);
 
 const downloadExt = (project.downloadName ?? project.downloadUrl ?? '').toLowerCase();
 const downloadDefault =
@@ -138,7 +153,7 @@ const downloadDefault =
             </div>
           )}
 
-          {features.length > 0 && (
+          {showSidebarFeatures && (
             <div class="block">
               <h2>{t.features}</h2>
               <ul class="features">
@@ -179,6 +194,103 @@ const downloadDefault =
         </div>
       </aside>
     </div>
+
+    {hasRich && (
+      <div class="rich">
+        {features.length > 0 && (
+          <section class="rich-section" id="features">
+            <div class="rich-head">
+              <span class="eyebrow">{locale === 'en' ? 'System features' : 'Δυνατότητες συστήματος'}</span>
+              <h2 class="rich-title">
+                {locale === 'en' ? 'Everything a real estate office needs' : 'Όλα όσα χρειάζεται ένα μεσιτικό γραφείο'}
+              </h2>
+            </div>
+            <div class="feature-grid">
+              {features.map((feature, index) => (
+                <div class="feature-card">
+                  <span class="feature-ico"><Icon name={featureIcon(index)} size={20} /></span>
+                  <p>{feature}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {showPricing && pricing && (
+          <section class="rich-section" id="pricing">
+            <div class="rich-head">
+              {pricing.eyebrow?.[locale] && <span class="eyebrow">{pricing.eyebrow[locale]}</span>}
+              <h2 class="rich-title">{pricing.title[locale]}</h2>
+              {pricing.lead?.[locale] && <p class="rich-lead">{pricing.lead[locale]}</p>}
+            </div>
+            <div class="pricing-grid">
+              {plans.map((plan) => (
+                <div class:list={['price-card', { 'price-card--featured': plan.highlight }]}>
+                  {plan.badge?.[locale] && <span class="price-badge">{plan.badge[locale]}</span>}
+                  <h3>{plan.name[locale]}</h3>
+                  <div class="price-setup">
+                    <strong>{plan.setup}</strong>
+                    <span>{locale === 'en' ? 'one-time build' : 'εφάπαξ κατασκευή'}</span>
+                  </div>
+                  <div class="price-monthly">
+                    <strong>{plan.monthly}</strong>
+                    <span>{locale === 'en' ? '/month maintenance' : '/μήνα συντήρηση'}</span>
+                  </div>
+                  {plan.note?.[locale] && <p class="price-note">{plan.note[locale]}</p>}
+                </div>
+              ))}
+            </div>
+            {pricing.includes?.[locale]?.length > 0 && (
+              <div class="price-includes">
+                <h3>{locale === 'en' ? 'What the monthly maintenance includes' : 'Τι περιλαμβάνει η μηνιαία συντήρηση'}</h3>
+                <ul>
+                  {pricing.includes[locale].map((item) => (
+                    <li>
+                      <span class="check"><Icon name="check" size={13} /></span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {pricing.footnote && <p class="price-footnote">{pricing.footnote[locale]}</p>}
+          </section>
+        )}
+
+        {showService && service && (
+          <section class="rich-section service" id="transfer">
+            <div class="service-icon"><Icon name="truck" size={26} /></div>
+            <div>
+              <h2>{service.title[locale]}</h2>
+              <p>{service.body[locale]}</p>
+              <p class="service-price">{service.priceLabel[locale]}</p>
+              {service.note && <p class="service-note">{service.note[locale]}</p>}
+            </div>
+          </section>
+        )}
+
+        {showCta && cta && (
+          <section class="rich-cta" id="quote">
+            <div>
+              <h2>{cta.title[locale]}</h2>
+              <p>{cta.body[locale]}</p>
+            </div>
+            <div class="rich-cta-actions">
+              <a class="btn btn--primary" href={cta.primary.href} target="_blank" rel="noopener">
+                {cta.primary.label[locale]}
+                <Icon name="external-link" size={17} />
+              </a>
+              {cta.secondary && (
+                <a class="btn btn--outline" href={resolveHref(cta.secondary.href)}>
+                  {cta.secondary.label[locale]}
+                  <Icon name="arrow-right" size={17} />
+                </a>
+              )}
+            </div>
+          </section>
+        )}
+      </div>
+    )}
   </div>
 
   <div class="lightbox" id="lightbox" hidden>
@@ -572,6 +684,303 @@ const downloadDefault =
 
   .back:hover {
     color: var(--primary);
+  }
+
+  /* Rich sections */
+  .rich {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .rich-section {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 40px;
+    box-shadow: var(--shadow-sm);
+    scroll-margin-top: 96px;
+  }
+
+  .rich-head {
+    max-width: 720px;
+    margin-bottom: 28px;
+  }
+
+  .rich-title {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    margin-bottom: 10px;
+  }
+
+  .rich-lead {
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .feature-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-soft);
+  }
+
+  .feature-card p {
+    font-size: 0.93rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  .feature-ico {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: var(--primary-50);
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .price-card {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 30px 28px 26px;
+    background: var(--bg-soft);
+  }
+
+  .price-card--featured {
+    border-color: var(--primary);
+    background: linear-gradient(180deg, var(--primary-50), #fff 72%);
+    box-shadow: 0 14px 34px -20px rgba(79, 70, 229, 0.5);
+  }
+
+  .price-badge {
+    position: absolute;
+    top: -11px;
+    left: 24px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+
+  .price-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 18px;
+  }
+
+  .price-setup {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .price-setup strong {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .price-setup span,
+  .price-monthly span {
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .price-monthly {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .price-monthly strong {
+    font-family: var(--font-head);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .price-note {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  .price-includes {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .price-includes h3 {
+    font-size: 0.98rem;
+    margin-bottom: 14px;
+  }
+
+  .price-includes ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+  }
+
+  .price-includes li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.93rem;
+    color: var(--ink-soft);
+  }
+
+  .price-footnote {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .service {
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+    background: var(--bg-soft);
+    box-shadow: none;
+  }
+
+  .service-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  .service h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .service p {
+    color: var(--ink-soft);
+    font-size: 0.97rem;
+  }
+
+  .service-price {
+    margin-top: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .service-note {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .rich-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 40px;
+    scroll-margin-top: 96px;
+  }
+
+  .rich-cta h2 {
+    color: #fff;
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    margin-bottom: 10px;
+  }
+
+  .rich-cta p {
+    color: #cbd5e1;
+    max-width: 56ch;
+  }
+
+  .rich-cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .rich-cta .btn--outline {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+
+  .rich-cta .btn--outline:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  @media (max-width: 900px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .rich-cta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .rich-section {
+      padding: 26px;
+    }
+
+    .feature-grid,
+    .price-includes ul {
+      grid-template-columns: 1fr;
+    }
+
+    .service {
+      flex-direction: column;
+    }
+
+    .rich-cta {
+      padding: 28px;
+    }
   }
 
   /* Lightbox */
