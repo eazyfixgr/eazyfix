@@ -146,13 +146,6 @@ const downloadDefault =
             ))}
           </div>
 
-          {body && (
-            <div class="block">
-              <h2>{t.about}</h2>
-              <p class="body-text">{body}</p>
-            </div>
-          )}
-
           {showSidebarFeatures && (
             <div class="block">
               <h2>{t.features}</h2>
@@ -194,6 +187,13 @@ const downloadDefault =
         </div>
       </aside>
     </div>
+
+    {body && (
+      <section class="about-wide" id="about">
+        <h2>{t.about}</h2>
+        <p class="body-text">{body}</p>
+      </section>
+    )}
 
     {hasRich && (
       <div class="rich">
@@ -394,6 +394,10 @@ const downloadDefault =
     padding: 32px 0 96px;
     background: var(--bg-soft);
     min-height: 60vh;
+  }
+
+  .detail-page .container {
+    max-width: 1320px;
   }
 
   .crumbs {
@@ -687,6 +691,25 @@ const downloadDefault =
   }
 
   /* Rich sections */
+  .about-wide {
+    margin-top: 30px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 34px 40px;
+    box-shadow: var(--shadow-sm);
+    scroll-margin-top: 96px;
+  }
+
+  .about-wide h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .about-wide .body-text {
+    max-width: 92ch;
+  }
+
   .rich {
     margin-top: 64px;
     display: flex;
@@ -966,6 +989,10 @@ const downloadDefault =
 
   @media (max-width: 620px) {
     .rich-section {
+      padding: 26px;
+    }
+
+    .about-wide {
       padding: 26px;
     }
 
