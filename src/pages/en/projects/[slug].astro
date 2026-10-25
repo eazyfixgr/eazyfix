@@ -33,7 +33,7 @@ const jsonLd = project.pricing
       offers: project.pricing.plans.map((plan) => ({
         '@type': 'Offer',
         name: plan.name.en,
-        price: plan.setup.replace(/[^\d.,]/g, '').replace(',', '.'),
+        price: plan.setup.replace(/[^\d]/g, ''),
         priceCurrency: 'EUR',
         availability: 'https://schema.org/InStock',
       })),
