@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 interface Props {
   hero: {
     badge: Record<string, string>;
@@ -31,6 +33,14 @@ const { hero, locale } = Astro.props;
     <div class="hero-cta">
       <a href="#work" class="btn btn--primary">{hero.primaryCta[locale]}</a>
       <a href="#contact" class="btn btn--ghost-light">{hero.secondaryCta[locale]}</a>
+      <a
+        href={locale === 'en' ? '/en/projects/rita-samothraki#pricing' : '/projects/rita-samothraki#pricing'}
+        class="btn btn--ghost-light hero-offer"
+      >
+        <Icon name="tag" size={16} />
+        {locale === 'en' ? 'See real estate website pricing' : 'Δείτε το κόστος για μεσιτική ιστοσελίδα'}
+        <Icon name="arrow-right" size={16} />
+      </a>
     </div>
 
     <dl class="hero-stats">
@@ -139,6 +149,18 @@ const { hero, locale } = Astro.props;
 
   .btn--ghost-light:hover {
     background: rgba(255, 255, 255, 0.14);
+  }
+
+  .hero-offer {
+    border-color: rgba(103, 232, 249, 0.42);
+    background: rgba(103, 232, 249, 0.08);
+    color: #e0f2fe;
+    gap: 8px;
+  }
+
+  .hero-offer:hover {
+    background: rgba(103, 232, 249, 0.16);
+    border-color: rgba(103, 232, 249, 0.68);
   }
 
   .hero-stats {
