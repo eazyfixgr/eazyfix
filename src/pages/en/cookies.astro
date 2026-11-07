@@ -1,0 +1,72 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { getBusiness } from '../../lib/content';
+
+const business = await getBusiness();
+const locale = 'en';
+---
+
+<LegalLayout
+  title="Cookie Policy — EazyFix"
+  description="Which cookies and local storage eazyfix.gr uses, why, and how you can manage them."
+  locale={locale}
+  business={business}
+>
+  <h2>1. What cookies are</h2>
+  <p>
+    Cookies are small files stored on your device when you visit a website. Browser
+    <strong>local storage</strong> works in a similar way. They are used for the proper operation of the
+    website and, where stated, for essential features such as the shopping cart.
+  </p>
+
+  <h2>2. Cookies and local storage we use</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Purpose</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>eazyfix_session</code></td>
+        <td>Cookie — strictly necessary</td>
+        <td>Authentication for the admin area (<code>/admin</code>). Not used for regular visitors.</td>
+        <td>Up to 7 days</td>
+      </tr>
+      <tr>
+        <td><code>eazyfix_cart_v1</code></td>
+        <td>localStorage — functional</td>
+        <td>Stores your shopping cart in your browser, only if you use the shop.</td>
+        <td>Until you delete it</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Third-party services</h2>
+  <ul>
+    <li><strong>Bunny Fonts:</strong> fonts are served from EU infrastructure. No cookies are used for this purpose.</li>
+    <li><strong>Stripe:</strong> if an online shop with payments is activated, the Stripe payment page may set its own cookies under Stripe’s privacy policy.</li>
+  </ul>
+
+  <h2>4. What we do not use</h2>
+  <p>
+    We do not use analytics, advertising, social media tracking or profiling cookies. That is why no
+    consent banner for non-essential cookies is shown.
+  </p>
+
+  <h2>5. How to manage them</h2>
+  <p>
+    You can delete or block cookies and local storage in your browser settings. If you block
+    <code>eazyfix_session</code>, you will not be able to sign in to the admin area. Deleting
+    <code>eazyfix_cart_v1</code> empties your cart.
+  </p>
+
+  <h2>6. Changes</h2>
+  <p>
+    If non-essential cookies (e.g. analytics) are added in the future, this policy will be updated and
+    prior consent will be requested where required.
+  </p>
+</LegalLayout>

@@ -122,6 +122,25 @@ const labels =
         <label for="message">{labels.message}</label>
         <textarea id="message" name="message" rows="4" required></textarea>
       </div>
+      <div class="field consent-field">
+        <label class="consent-label">
+          <input type="checkbox" id="consent" name="consent" required />
+          <span>
+            {locale === 'en' ? 'I have read and accept the ' : 'Έχω διαβάσει και αποδέχομαι την '}
+            <a href={locale === 'en' ? '/en/privacy' : '/privacy'} target="_blank" rel="noopener">
+              {locale === 'en' ? 'Privacy Policy' : 'Πολιτική Απορρήτου'}
+            </a>
+            {locale === 'en'
+              ? '. The message will be sent via WhatsApp (Meta).'
+              : '. Το μήνυμα θα σταλεί μέσω WhatsApp (Meta).'}
+          </span>
+        </label>
+      </div>
+      <p class="form-note">
+        {locale === 'en'
+          ? 'Pressing send opens WhatsApp with your message pre-filled. Your data is transmitted via WhatsApp (Meta).'
+          : 'Πατώντας αποστολή, ανοίγει το WhatsApp με προσυμπληρωμένο το μήνυμα. Τα στοιχεία σας διαβιβάζονται μέσω WhatsApp (Meta).'}
+      </p>
       <button type="submit" class="btn btn--primary btn--block">
         {labels.submit}
         <Icon name="arrow-right" size={18} />
@@ -135,6 +154,7 @@ const labels =
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     const data = new FormData(form);
+    if (!data.get('consent')) return;
     const locale = form.dataset.locale === 'en' ? 'en' : 'el';
     const whatsapp = form.dataset.whatsapp || '';
 
@@ -262,6 +282,39 @@ const labels =
 
   .field textarea {
     resize: vertical;
+  }
+
+  .consent-field {
+    margin-bottom: 14px;
+  }
+
+  .consent-label {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .consent-label input {
+    width: auto;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .consent-label a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .form-note {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
   }
 
   @media (max-width: 860px) {

@@ -192,6 +192,13 @@ const siteName = business?.name ?? 'EazyFix';
           </div>
         </div>
 
+        <div class="footer-legal">
+          <a href={locale === 'en' ? '/en/privacy' : '/privacy'}>{locale === 'en' ? 'Privacy Policy' : 'Πολιτική Απορρήτου'}</a>
+          <a href={locale === 'en' ? '/en/cookies' : '/cookies'}>{locale === 'en' ? 'Cookie Policy' : 'Πολιτική Cookies'}</a>
+          <a href={locale === 'en' ? '/en/terms' : '/terms'}>{locale === 'en' ? 'Terms of Service' : 'Όροι Χρήσης'}</a>
+          <a href={locale === 'en' ? '/en/imprint' : '/imprint'}>{locale === 'en' ? 'Legal Notice' : 'Νομικές Πληροφορίες'}</a>
+        </div>
+
         <div class="footer-bottom">
           <span>&copy; {year} {name}. {t.rights}</span>
           <span>{t.madeIn}</span>
@@ -413,11 +420,28 @@ const siteName = business?.name ?? 'EazyFix';
         justify-content: space-between;
         gap: 16px;
         flex-wrap: wrap;
-        margin-top: 56px;
+        margin-top: 18px;
         padding-top: 24px;
         border-top: 1px solid rgba(148, 163, 184, 0.18);
         color: #64748b;
         font-size: 0.86rem;
+      }
+
+      .footer-legal {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 22px;
+        margin-top: 40px;
+        font-size: 0.85rem;
+      }
+
+      .footer-legal a {
+        color: #94a3b8;
+        transition: color 0.18s ease;
+      }
+
+      .footer-legal a:hover {
+        color: #fff;
       }
 
       @media (max-width: 900px) {

@@ -1,0 +1,150 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: 'el' | 'en';
+  business: any;
+}
+
+const { title, description, locale, business } = Astro.props;
+const updated = new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : 'el-GR', {
+  dateStyle: 'long',
+}).format(new Date());
+---
+
+<Layout title={title} description={description} locale={locale} business={business}>
+  <section class="legal-hero">
+    <div class="container">
+      <span class="legal-eyebrow">{locale === 'en' ? 'Legal' : 'Νομικά'}</span>
+      <h1>{title}</h1>
+      <p class="legal-updated">{locale === 'en' ? 'Last updated' : 'Τελευταία ενημέρωση'}: {updated}</p>
+    </div>
+  </section>
+  <section class="legal-body">
+    <div class="container">
+      <article class="legal-prose">
+        <slot />
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 76px 0 56px;
+  }
+
+  .legal-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    margin-bottom: 14px;
+  }
+
+  .legal-hero h1 {
+    color: #fff;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    margin-bottom: 12px;
+  }
+
+  .legal-updated {
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+
+  .legal-body {
+    padding: 64px 0 96px;
+    background: var(--bg-soft);
+  }
+
+  .legal-prose {
+    max-width: 860px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 44px;
+    box-shadow: var(--shadow-sm);
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+
+  .legal-prose :global(h2) {
+    font-size: 1.2rem;
+    margin: 32px 0 12px;
+    color: var(--ink);
+  }
+
+  .legal-prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .legal-prose :global(h3) {
+    font-size: 1.02rem;
+    margin: 22px 0 8px;
+    color: var(--ink);
+  }
+
+  .legal-prose :global(p) {
+    margin: 0 0 14px;
+  }
+
+  .legal-prose :global(ul) {
+    margin: 0 0 16px;
+    padding-left: 22px;
+  }
+
+  .legal-prose :global(li) {
+    margin-bottom: 7px;
+  }
+
+  .legal-prose :global(a) {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.92rem;
+  }
+
+  .legal-prose :global(th),
+  .legal-prose :global(td) {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .legal-prose :global(th) {
+    background: var(--bg-soft);
+    color: var(--ink);
+  }
+
+  .legal-prose :global(strong) {
+    color: var(--ink);
+  }
+
+  @media (max-width: 620px) {
+    .legal-hero {
+      padding: 56px 0 42px;
+    }
+
+    .legal-body {
+      padding: 40px 0 64px;
+    }
+
+    .legal-prose {
+      padding: 26px;
+    }
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { getBusiness } from '../lib/content';
+
+const business = await getBusiness();
+const locale = 'el';
+---
+
+<LegalLayout
+  title="Νομικές Πληροφορίες — EazyFix"
+  description="Στοιχεία παρόχου και νομικές πληροφορίες για τον ιστότοπο eazyfix.gr."
+  locale={locale}
+  business={business}
+>
+  <h2>Στοιχεία παρόχου</h2>
+  <table>
+    <tbody>
+      <tr>
+        <th>Ονοματεπώνυμο</th>
+        <td>Γεώργιος Τσουχνικάς</td>
+      </tr>
+      <tr>
+        <th>Διακριτικός τίτλος</th>
+        <td>EazyFix</td>
+      </tr>
+      <tr>
+        <th>Νομική μορφή</th>
+        <td>Ατομική επιχείρηση</td>
+      </tr>
+      <tr>
+        <th>Έδρα</th>
+        <td>Σαλαμίνα, Ελλάδα</td>
+      </tr>
+      <tr>
+        <th>ΑΦΜ</th>
+        <td>160020860</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><a href="mailto:g.touhnikas@gmail.com">g.touhnikas@gmail.com</a></td>
+      </tr>
+      <tr>
+        <th>Τηλέφωνο</th>
+        <td><a href="tel:6971234567">6971234567</a></td>
+      </tr>
+      <tr>
+        <th>Υπεύθυνος περιεχομένου</th>
+        <td>Γεώργιος Τσουχνικάς</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Φιλοξενία και τεχνική υποδομή</h2>
+  <p>
+    Ο ιστότοπος φιλοξενείται μέσω της <strong>Cloudflare</strong>. Τα δημόσια demos παιχνιδιών φιλοξενούνται
+    μέσω <strong>GitHub Pages</strong>. Οι γραμματοσειρές παρέχονται από την <strong>Bunny Fonts</strong> (ΕΕ).
+  </p>
+
+  <h2>Προστασία δεδομένων</h2>
+  <p>
+    Για θέματα προσωπικών δεδομένων: <a href="/privacy">Πολιτική Απορρήτου</a>.
+    Εποπτική αρχή: <strong>Αρχή Προστασίας Δεδομένων Προσωπικού Χαρακτήρα (ΑΠΔΠΧ)</strong>,
+    <a href="https://www.dpa.gr" target="_blank" rel="noopener">www.dpa.gr</a>.
+  </p>
+
+  <h2>Καταναλωτές</h2>
+  <p>
+    Για εξωδικαστική επίλυση καταναλωτικών διαφορών μπορείτε να απευθυνθείτε στον
+    <strong>Συνήγορο του Καταναλωτή</strong>,
+    <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener">www.synigoroskatanaloti.gr</a>.
+  </p>
+
+  <h2>Πνευματικά δικαιώματα τρίτων</h2>
+  <p>
+    Ονόματα, σήματα, λογισμικό και υλικά τρίτων που αναφέρονται ή εμφανίζονται στον ιστότοπο ανήκουν
+    στους αντίστοιχους κατόχους τους. Τυχόν open-source λογισμικό διέπεται από τις άδειες των έργων του.
+  </p>
+
+  <h2>Περισσότερα</h2>
+  <p>
+    <a href="/privacy">Πολιτική Απορρήτου</a> · <a href="/cookies">Πολιτική Cookies</a> ·
+    <a href="/terms">Όροι Χρήσης &amp; Συνεργασίας</a>
+  </p>
+</LegalLayout>

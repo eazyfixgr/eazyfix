@@ -1,0 +1,84 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { getBusiness } from '../../lib/content';
+
+const business = await getBusiness();
+const locale = 'en';
+---
+
+<LegalLayout
+  title="Legal Notice — EazyFix"
+  description="Provider details and legal information for the eazyfix.gr website."
+  locale={locale}
+  business={business}
+>
+  <h2>Provider details</h2>
+  <table>
+    <tbody>
+      <tr>
+        <th>Name</th>
+        <td>Georgios Tsouchnikas</td>
+      </tr>
+      <tr>
+        <th>Trade name</th>
+        <td>EazyFix</td>
+      </tr>
+      <tr>
+        <th>Legal form</th>
+        <td>Sole proprietorship</td>
+      </tr>
+      <tr>
+        <th>Registered address</th>
+        <td>Salamina, Greece</td>
+      </tr>
+      <tr>
+        <th>VAT number</th>
+        <td>160020860</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><a href="mailto:g.touhnikas@gmail.com">g.touhnikas@gmail.com</a></td>
+      </tr>
+      <tr>
+        <th>Phone</th>
+        <td><a href="tel:6971234567">6971234567</a></td>
+      </tr>
+      <tr>
+        <th>Responsible for content</th>
+        <td>Georgios Tsouchnikas</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Hosting and infrastructure</h2>
+  <p>
+    The website is hosted via <strong>Cloudflare</strong>. Public game demos are hosted on
+    <strong>GitHub Pages</strong>. Fonts are provided by <strong>Bunny Fonts</strong> (EU).
+  </p>
+
+  <h2>Data protection</h2>
+  <p>
+    For privacy matters: <a href="/en/privacy">Privacy Policy</a>.
+    Supervisory authority: <strong>Hellenic Data Protection Authority (HDPA)</strong>,
+    <a href="https://www.dpa.gr" target="_blank" rel="noopener">www.dpa.gr</a>.
+  </p>
+
+  <h2>Consumers</h2>
+  <p>
+    For out-of-court resolution of consumer disputes you may contact the
+    <strong>Hellenic Consumer Ombudsman</strong>,
+    <a href="https://www.synigoroskatanaloti.gr" target="_blank" rel="noopener">www.synigoroskatanaloti.gr</a>.
+  </p>
+
+  <h2>Third-party rights</h2>
+  <p>
+    Names, trademarks, software and third-party materials mentioned or displayed on the website belong to
+    their respective owners. Any open-source software is governed by the licences of its projects.
+  </p>
+
+  <h2>More</h2>
+  <p>
+    <a href="/en/privacy">Privacy Policy</a> · <a href="/en/cookies">Cookie Policy</a> ·
+    <a href="/en/terms">Terms of Service</a>
+  </p>
+</LegalLayout>
