@@ -77,7 +77,7 @@ function categoryLabel(slug) {
 
 function setStatus(text, kind) {
   statusEl.textContent = text || '';
-  statusEl.className = kind || '';
+  statusEl.className = 'save-status ' + (kind || '');
 }
 
 async function api(url, options) {
