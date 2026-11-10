@@ -581,6 +581,25 @@ h4 {
   flex-wrap: wrap;
 }
 
+.upload-row > input[type='text'],
+.upload-row > input[type='url'] {
+  flex: 1;
+  min-width: 180px;
+  padding: 9px 12px;
+  border: 1px solid var(--a-line);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--a-ink);
+}
+
+.upload-row > input[type='text']:focus,
+.upload-row > input[type='url']:focus {
+  outline: none;
+  border-color: var(--a-primary);
+  box-shadow: 0 0 0 4px var(--a-primary-50);
+}
+
 .file-btn {
   display: inline-flex;
   align-items: center;

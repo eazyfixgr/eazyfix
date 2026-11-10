@@ -182,8 +182,13 @@ async function saveProjectsOnly() {
 }
 
 async function saveAll() {
+  if (state.editing && !String(state.editing.name || '').trim()) {
+    setStatus('Συμπλήρωσε όνομα project', 'error');
+    return;
+  }
   saveBtn.disabled = true;
   setStatus('Αποθήκευση...');
+  const editingId = state.editing?.id ?? null;
   try {
     if (state.editing) commitEditing();
     const responses = await Promise.all([
@@ -209,6 +214,13 @@ async function saveAll() {
     if (responses.some((res) => !res.ok)) throw new Error('save failed');
     state.dirty = false;
     setStatus('Αποθηκεύτηκε', 'ok');
+    if (editingId) {
+      const saved = state.projects.find((project) => project.id === editingId);
+      if (saved) {
+        state.editing = clone(saved);
+        state.isNew = false;
+      }
+    }
     render();
   } catch {
     setStatus('Σφάλμα αποθήκευσης', 'error');
@@ -574,12 +586,14 @@ function renderMedia(project) {
       <h3>Screenshots</h3>
       <p class="hint">Οι πρώτες εικόνες εμφανίζονται στη gallery της σελίδας. Σύρετε για αλλαγή σειράς; προς το παρόν χρησιμοποιήστε τη σειρά προσθήκης.</p>
       ${shots ? `<div class="shots">${shots}</div>` : ''}
-      <div class="upload-row">
-        <label class="file-btn">${icon('image')} Ανέβασμα εικόνων
-          <input type="file" accept="image/*" multiple data-action="upload" />
-        </label>
-        <input type="text" id="shot-url" placeholder="https://..." style="max-width:300px" />
-        <button type="button" class="abtn abtn--ghost2 abtn--sm" data-action="add-shot">Προσθήκη από URL</button>
+      <div class="field"><label>Προσθήκη εικόνας</label>
+        <div class="upload-row">
+          <label class="file-btn">${icon('image')} Ανέβασμα εικόνων
+            <input type="file" accept="image/*" multiple data-action="upload" />
+          </label>
+          <input type="text" id="shot-url" placeholder="https://..." />
+          <button type="button" class="abtn abtn--ghost2 abtn--sm" data-action="add-shot">Προσθήκη από URL</button>
+        </div>
       </div>
     </div>
   </div>`;
@@ -601,9 +615,11 @@ function renderLinks(project) {
             ? 'Το URL όπου παίζει το παιχνίδι (π.χ. GitHub Pages). Δεν χρειάζεται ανέβασμα αρχείου.'
             : 'Ανέβασε EXE/ZIP/APK ή βάλε απευθείας URL. Το όνομα και το μέγεθος συμπληρώνονται αυτόματα.'
         }</p>
-        <div class="upload-row">
-          <input type="text" data-path="downloadUrl" value="${esc(project.downloadUrl ?? '')}" placeholder="https://..." style="flex:1;min-width:220px" />
-          ${project.downloadUrl ? `<a class="abtn abtn--ghost2 abtn--sm" href="${esc(project.downloadUrl)}" target="_blank" rel="noopener">${icon('external')} Άνοιγμα</a><button type="button" class="abtn abtn--danger abtn--sm" data-action="clear-download">Καθαρισμός</button>` : ''}
+        <div class="field"><label>URL αρχείου</label>
+          <div class="upload-row">
+            <input type="text" data-path="downloadUrl" value="${esc(project.downloadUrl ?? '')}" placeholder="https://..." />
+            ${project.downloadUrl ? `<a class="abtn abtn--ghost2 abtn--sm" href="${esc(project.downloadUrl)}" target="_blank" rel="noopener">${icon('external')} Άνοιγμα</a><button type="button" class="abtn abtn--danger abtn--sm" data-action="clear-download">Καθαρισμός</button>` : ''}
+          </div>
         </div>
         ${
           isPlay
