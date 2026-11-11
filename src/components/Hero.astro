@@ -31,7 +31,7 @@ const { hero, locale } = Astro.props;
     </h1>
     <p class="hero-sub">{hero.subtitle[locale]}</p>
     <div class="hero-cta">
-      <a href="#work" class="btn btn--primary">{hero.primaryCta[locale]}</a>
+      <a href={locale === 'en' ? '/en/templates' : '/templates'} class="btn btn--primary">{hero.primaryCta[locale]}</a>
       <a href="#contact" class="btn btn--ghost-light">{hero.secondaryCta[locale]}</a>
       <a
         href={locale === 'en' ? '/en/projects/rita-samothraki#pricing' : '/projects/rita-samothraki#pricing'}

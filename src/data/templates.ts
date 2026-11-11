@@ -72,6 +72,15 @@ export const templates: Template[] = [
     style: 'appetite-ordering',
     built: true,
   },
+  {
+    slug: 'kreopoleio-xatoupis',
+    number: 8,
+    name: { el: 'Κρεοπωλείο', en: 'Butcher Shop' },
+    category: { el: 'Τρόφιμα', en: 'Food' },
+    short: { el: 'Οικογενειακό κρεοπωλείο με παράδοση & online παραγγελίες.', en: 'Family butcher shop with heritage & online orders.' },
+    style: 'rustic-editorial',
+    built: true,
+  },
 ];
 
 export function getTemplate(slug: string): Template | undefined {

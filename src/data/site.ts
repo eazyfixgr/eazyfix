@@ -29,7 +29,7 @@ export const site = {
       el: 'Πίσω από το EazyFix προσφέρω εξειδικευμένες υπηρεσίες επισκευής υπολογιστών, ανάπτυξη σύγχρονων ιστοσελίδων, εφαρμογών και παιχνιδιών Android, καθώς και custom εργαλείων για Windows.',
       en: 'Behind EazyFix I provide specialised computer repair services, modern website development, Android apps and games, and custom Windows tools.',
     },
-    primaryCta: { el: 'Δείτε τις δουλειές μου', en: 'See my work' },
+    primaryCta: { el: 'Δείτε έτοιμες σελίδες', en: 'See ready-made sites' },
     secondaryCta: { el: 'Επικοινωνία', en: 'Contact' },
     stats: [
       { value: '5', label: { el: 'τομείς', en: 'fields' } },

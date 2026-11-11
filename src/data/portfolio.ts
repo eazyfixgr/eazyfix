@@ -27,7 +27,6 @@ export const categories: Category[] = [
       en: ['Custom design', 'Perfect on every screen', 'SEO & speed', 'e-Shop & online bookings', 'Hosting, domain & email', 'Post-launch support'],
     },
     tech: ['Astro', 'Vue', 'TypeScript', 'Cloudflare', 'Supabase', 'Firebase'],
-    extraLink: { href: '/templates', label: { el: 'Δείτε τα έτοιμα πρότυπα ιστοσελίδων', en: 'Browse our website templates' } },
   },
   {
     slug: 'android-apps',
