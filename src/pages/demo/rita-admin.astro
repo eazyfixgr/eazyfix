@@ -1,0 +1,198 @@
+---
+import '../../styles/rita-admin-demo.css';
+---
+
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#1e3a5f" />
+    <title>Demo διαχείρισης ακινήτων — EazyFix</title>
+    <link rel="preconnect" href="https://fonts.bunny.net" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|sora:600,700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="preview-banner">
+      <div class="preview-banner-inner">
+        <span class="preview-pill">DEMO</span>
+        <p>Προεπισκόπηση διαχείρισης · Ενδεικτικά στοιχεία, χωρίς σύνδεση με πραγματικά δεδομένα</p>
+        <a href="/projects/rita-samothraki#pricing">Επιστροφή στην παρουσίαση <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <div class="demo-shell">
+      <aside class="demo-sidebar" id="demoSidebar" aria-label="Μενού demo διαχείρισης">
+        <div class="demo-brand">
+          <span class="brand-mark">RS</span>
+          <span><strong>Rita Samothraki</strong><small>PROPERTY ADMIN · DEMO</small></span>
+          <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Κλείσιμο μενού">×</button>
+        </div>
+
+        <div class="office-chip"><span class="office-avatar">RS</span><span><strong>Δείγμα γραφείου</strong><small>Περιβάλλον προεπισκόπησης</small></span><span class="online-dot" title="Demo"></span></div>
+
+        <nav class="demo-nav" id="demoNav">
+          <span class="nav-caption">ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ</span>
+          <button type="button" class="nav-item active" data-screen="dashboard">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="11" width="7" height="10" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg><span>Πίνακας ελέγχου</span>
+          </button>
+          <button type="button" class="nav-item" data-screen="listings">
+            <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5M9 21v-7h6v7"/></svg><span>Αγγελίες</span><b class="nav-count">28</b>
+          </button>
+          <button type="button" class="nav-item" data-screen="requests">
+            <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5h-6l-5 4v-4.2A2.5 2.5 0 0 1 4 13.5z"/><path d="M8 8h8M8 11.5h5"/></svg><span>Αιτήματα</span><b class="nav-count nav-count-alert">3</b>
+          </button>
+          <button type="button" class="nav-item" data-screen="assignments">
+            <svg viewBox="0 0 24 24"><path d="M8 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/><path d="m14 3 7 7-9 9-4 1 1-4zM12 5h-1"/></svg><span>Αναθέσεις</span><b class="nav-count">1</b>
+          </button>
+          <button type="button" class="nav-item" data-screen="reports">
+            <svg viewBox="0 0 24 24"><path d="M12 3 2.8 19a1.4 1.4 0 0 0 1.2 2h16a1.4 1.4 0 0 0 1.2-2z"/><path d="M12 9v4M12 17h.01"/></svg><span>Αναφορές προβλημάτων</span>
+          </button>
+          <button type="button" class="nav-item" data-screen="statistics">
+            <svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 4 4 6-7"/></svg><span>Στατιστικά</span>
+          </button>
+          <button type="button" class="nav-item" data-screen="services">
+            <svg viewBox="0 0 24 24"><path d="M4 20h16M6 20V8l6-4 6 4v12M9 20v-5h6v5M9 10h.01M15 10h.01"/></svg><span>Υπηρεσίες</span>
+          </button>
+
+          <span class="nav-caption nav-caption-spaced">ΡΥΘΜΙΣΕΙΣ ΓΡΑΦΕΙΟΥ</span>
+          <button type="button" class="nav-item" data-screen="settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9z"/></svg><span>Στοιχεία γραφείου</span>
+          </button>
+          <button type="button" class="nav-item" data-screen="categories">
+            <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Κατηγορίες &amp; περιοχές</span>
+          </button>
+          <button type="button" class="nav-item" data-screen="site-content">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg><span>Κείμενα ιστοσελίδας</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="storage-summary"><span>Αποθηκευτικός χώρος</span><strong>2.4 / 10 GB</strong><i><b></b></i></div>
+          <button type="button" class="sidebar-profile" data-demo-action="profile">
+            <span class="profile-avatar">D</span><span><strong>Demo διαχειριστής</strong><small>Προεπισκόπηση</small></span><span class="profile-dots">•••</span>
+          </button>
+        </div>
+      </aside>
+
+      <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+      <main class="demo-main">
+        <header class="admin-topbar">
+          <div class="topbar-title-wrap">
+            <button type="button" class="mobile-menu" id="mobileMenu" aria-label="Άνοιγμα μενού">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="breadcrumbs"><span>Γραφείο</span><i>/</i><strong id="breadcrumbTitle">Πίνακας ελέγχου</strong></div>
+          </div>
+          <div class="topbar-actions">
+            <span class="topbar-demo-state"><i></i> Demo περιβάλλον</span>
+            <button type="button" class="topbar-icon" data-demo-action="notifications" aria-label="Ειδοποιήσεις">
+              <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><b>2</b>
+            </button>
+            <span class="topbar-avatar">D</span>
+          </div>
+        </header>
+
+        <div class="demo-content">
+          <section class="demo-view active" data-view="dashboard">
+            <div class="page-heading">
+              <div><span class="page-kicker">ΕΝΔΕΙΚΤΙΚΑ ΣΤΟΙΧΕΙΑ · DEMO</span><h1>Πίνακας ελέγχου</h1><p>Μια γρήγορη εικόνα της δραστηριότητας του γραφείου σας.</p></div>
+              <button type="button" class="btn-primary" data-demo-action="add-listing"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Νέα αγγελία</button>
+            </div>
+            <div class="demo-data-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>Τα στοιχεία αυτής της προεπισκόπησης είναι ενδεικτικά και δεν συνδέονται με πραγματικό λογαριασμό.</div>
+            <div class="stat-grid">
+              <article class="stat-card"><div class="stat-card-top"><span>Ενεργές αγγελίες</span><i class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5M5.5 9.5V21h13V9.5M9 21v-7h6v7"/></svg></i></div><strong>28</strong><small><span class="trend-up">↑ 4</span> από τον προηγούμενο μήνα</small></article>
+              <article class="stat-card"><div class="stat-card-top"><span>Προτεινόμενα</span><i class="stat-icon gold"><svg viewBox="0 0 24 24"><path d="m12 3 2.4 5 5.6.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.6-.8z"/></svg></i></div><strong>6</strong><small>Σε αγορά και ενοικίαση</small></article>
+              <article class="stat-card"><div class="stat-card-top"><span>Νέα αιτήματα</span><i class="stat-icon mint"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5h-6l-5 4v-4.2A2.5 2.5 0 0 1 4 13.5z"/></svg></i></div><strong>3</strong><small><span class="status-dot amber"></span>Χρειάζονται απάντηση</small></article>
+              <article class="stat-card"><div class="stat-card-top"><span>Προβολές αγγελιών</span><i class="stat-icon violet"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 4 4 6-7"/></svg></i></div><strong>1,284</strong><small><span class="trend-up">↑ 12%</span> τις τελευταίες 30 ημέρες</small></article>
+            </div>
+            <div class="dashboard-grid">
+              <section class="surface-card listings-widget">
+                <div class="surface-heading"><div><h2>Πρόσφατες αγγελίες</h2><p>Οι τελευταίες καταχωρίσεις του demo γραφείου</p></div><button type="button" class="text-action" data-go-screen="listings">Όλες οι αγγελίες <span>→</span></button></div>
+                <div class="mini-listings">
+                  <button class="mini-listing" type="button" data-open-listing="d-1042"><span class="property-thumb thumb-home"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></svg></span><span class="mini-listing-copy"><strong>Φωτεινό διαμέρισμα με θέα</strong><small>Demo περιοχή · 82 τ.μ. · #D-1042</small></span><span class="mini-price">148.000 €</span><span class="table-status status-active">Ενεργή</span><span class="row-arrow">›</span></button>
+                  <button class="mini-listing" type="button" data-open-listing="d-1041"><span class="property-thumb thumb-house"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></svg></span><span class="mini-listing-copy"><strong>Μονοκατοικία με αυλή</strong><small>Demo περιοχή · 126 τ.μ. · #D-1041</small></span><span class="mini-price">212.000 €</span><span class="table-status status-active">Ενεργή</span><span class="row-arrow">›</span></button>
+                  <button class="mini-listing" type="button" data-open-listing="d-1038"><span class="property-thumb thumb-land"><svg viewBox="0 0 24 24"><path d="M3 19 8 8l4 5 3-4 6 10H3Z"/><path d="M5 21h14"/></svg></span><span class="mini-listing-copy"><strong>Οικόπεδο εντός σχεδίου</strong><small>Demo περιοχή · 510 τ.μ. · #D-1038</small></span><span class="mini-price">74.000 €</span><span class="table-status status-review">Πρόχειρη</span><span class="row-arrow">›</span></button>
+                </div>
+              </section>
+              <section class="surface-card requests-widget">
+                <div class="surface-heading"><div><h2>Αιτήματα ενδιαφέροντος</h2><p>Πρόσφατη δραστηριότητα · Demo</p></div><button type="button" class="round-icon" data-go-screen="requests" aria-label="Προβολή αιτημάτων">→</button></div>
+                <div class="request-preview"><span class="request-avatar avatar-blue">ΜΚ</span><div><strong>Αναζήτηση κατοικίας</strong><small>Έως 180.000 € · 2 υπνοδωμάτια</small></div><b class="request-unread"></b></div>
+                <div class="request-preview"><span class="request-avatar avatar-gold">ΑΠ</span><div><strong>Ενδιαφέρον για οικόπεδο</strong><small>Εντός σχεδίου · 400+ τ.μ.</small></div><b class="request-unread"></b></div>
+                <div class="match-note"><svg viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l1 2.5 2.5 1-2.5 1L19 23l-1-2.5-2.5-1 2.5-1z"/></svg><span><strong>Έξυπνη αντιστοίχιση</strong><small>3 διαθέσιμες αγγελίες ταιριάζουν σε αιτήματα</small></span></div>
+              </section>
+            </div>
+            <section class="surface-card activity-card"><div class="surface-heading"><div><h2>Γρήγορες ενέργειες</h2><p>Συχνές εργασίες διαχείρισης</p></div></div><div class="quick-actions"><button type="button" data-demo-action="add-listing"><span>＋</span><b>Νέα αγγελία</b><small>Καταχώριση ακινήτου</small></button><button type="button" data-go-screen="requests"><span>↗</span><b>Αιτήματα</b><small>Απάντηση σε ενδιαφερόμενους</small></button><button type="button" data-go-screen="statistics"><span>▥</span><b>Στατιστικά</b><small>Προβολές και απόδοση</small></button><button type="button" data-go-screen="settings"><span>⚙</span><b>Στοιχεία γραφείου</b><small>Ενημέρωση προφίλ</small></button></div></section>
+          </section>
+
+          <section class="demo-view" data-view="listings">
+            <div class="page-heading"><div><span class="page-kicker">ΔΙΑΧΕΙΡΙΣΗ ΑΚΙΝΗΤΩΝ · DEMO</span><h1>Αγγελίες</h1><p>Αναζήτηση, φιλτράρισμα και διαχείριση καταχωρίσεων.</p></div><button type="button" class="btn-primary" data-demo-action="add-listing"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Νέα αγγελία</button></div>
+            <div class="listing-toolbar"><label class="search-control"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="listingSearch" type="search" placeholder="Αναζήτηση τίτλου ή κωδικού" /></label><select id="listingType"><option value="all">Όλοι οι τύποι</option><option value="sale">Αγορά</option><option value="rent">Ενοικίαση</option><option value="land">Οικόπεδα &amp; γη</option></select><select id="listingStatus"><option value="all">Όλες οι καταστάσεις</option><option value="active">Ενεργές</option><option value="draft">Πρόχειρες</option></select><button class="filter-reset" type="button" id="resetFilters">Καθαρισμός</button></div>
+            <div class="listings-summary"><span id="listingCount">5 ενδεικτικές αγγελίες</span><span>Τα δεδομένα είναι δείγματα για την προεπισκόπηση</span></div>
+            <div class="table-card"><div class="table-scroll"><table class="listing-table"><thead><tr><th>Ακίνητο</th><th>Τύπος</th><th>Περιοχή demo</th><th>Τιμή</th><th>Κατάσταση</th><th></th></tr></thead><tbody id="listingRows">
+              <tr data-listing-row data-id="d-1042" data-type="sale" data-status="active" data-search="d-1042 φωτεινό διαμέρισμα θέα"><td><div class="table-property"><span class="property-thumb thumb-home"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></svg></span><span><strong>Φωτεινό διαμέρισμα με θέα</strong><small>#D-1042 · 82 τ.μ. · 2 υπνοδωμάτια</small></span></div></td><td>Αγορά</td><td>Περιοχή demo</td><td class="price-cell">148.000 €</td><td><span class="table-status status-active">Ενεργή</span></td><td><button class="row-edit" type="button" data-open-listing="d-1042">Επεξεργασία</button></td></tr>
+              <tr data-listing-row data-id="d-1041" data-type="sale" data-status="active" data-search="d-1041 μονοκατοικία αυλή"><td><div class="table-property"><span class="property-thumb thumb-house"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></svg></span><span><strong>Μονοκατοικία με αυλή</strong><small>#D-1041 · 126 τ.μ. · 3 υπνοδωμάτια</small></span></div></td><td>Αγορά</td><td>Περιοχή demo</td><td class="price-cell">212.000 €</td><td><span class="table-status status-active">Ενεργή</span></td><td><button class="row-edit" type="button" data-open-listing="d-1041">Επεξεργασία</button></td></tr>
+              <tr data-listing-row data-id="d-1038" data-type="land" data-status="draft" data-search="d-1038 οικόπεδο εντός σχεδίου"><td><div class="table-property"><span class="property-thumb thumb-land"><svg viewBox="0 0 24 24"><path d="M3 19 8 8l4 5 3-4 6 10H3Z"/><path d="M5 21h14"/></svg></span><span><strong>Οικόπεδο εντός σχεδίου</strong><small>#D-1038 · 510 τ.μ. · Άρτιο</small></span></div></td><td>Οικόπεδο</td><td>Περιοχή demo</td><td class="price-cell">74.000 €</td><td><span class="table-status status-draft">Πρόχειρη</span></td><td><button class="row-edit" type="button" data-open-listing="d-1038">Επεξεργασία</button></td></tr>
+              <tr data-listing-row data-id="d-1035" data-type="rent" data-status="active" data-search="d-1035 διαμέρισμα επιπλωμένο ενοικίαση"><td><div class="table-property"><span class="property-thumb thumb-flat"><svg viewBox="0 0 24 24"><path d="M4 21V5l8-2 8 2v16M2 21h20M8 8h2m4 0h2M8 12h2m4 0h2M10 21v-5h4v5"/></svg></span><span><strong>Επιπλωμένο διαμέρισμα</strong><small>#D-1035 · 64 τ.μ. · 1 υπνοδωμάτιο</small></span></div></td><td>Ενοικίαση</td><td>Περιοχή demo</td><td class="price-cell">650 € / μήνα</td><td><span class="table-status status-active">Ενεργή</span></td><td><button class="row-edit" type="button" data-open-listing="d-1035">Επεξεργασία</button></td></tr>
+              <tr data-listing-row data-id="d-1031" data-type="sale" data-status="active" data-search="d-1031 κατοικία νεόδμητη"><td><div class="table-property"><span class="property-thumb thumb-home"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></svg></span><span><strong>Νεόδμητη κατοικία</strong><small>#D-1031 · 98 τ.μ. · 2 υπνοδωμάτια</small></span></div></td><td>Αγορά</td><td>Περιοχή demo</td><td class="price-cell">179.000 €</td><td><span class="table-status status-active">Ενεργή</span></td><td><button class="row-edit" type="button" data-open-listing="d-1031">Επεξεργασία</button></td></tr>
+            </tbody></table></div><div class="table-footer"><span>Εμφάνιση 1–5 από 5 δείγματα</span><div><button disabled>‹</button><button class="current-page">1</button><button disabled>›</button></div></div></div>
+          </section>
+
+          <section class="demo-view" data-view="requests">
+            <div class="page-heading"><div><span class="page-kicker">ΕΝΔΙΑΦΕΡΟΝ · DEMO</span><h1>Αιτήματα ενδιαφέροντος</h1><p>Οργάνωσε τις ανάγκες των υποψήφιων αγοραστών και δες τις διαθέσιμες αντιστοιχίσεις.</p></div><button type="button" class="btn-secondary" data-demo-action="toast">＋ Νέο αίτημα</button></div>
+            <div class="request-filters"><button class="filter-chip selected">Όλα <b>3</b></button><button class="filter-chip">Νέα <b>2</b></button><button class="filter-chip">Σε εξέλιξη <b>1</b></button><button class="filter-chip">Ολοκληρωμένα <b>0</b></button></div>
+            <div class="request-list">
+              <article class="request-card"><div class="request-card-head"><span class="request-avatar avatar-blue">ΜΚ</span><div class="request-person"><strong>Μ. Κ. <span class="new-label">ΝΕΟ</span></strong><small>Σήμερα, 10:42 · Demo αίτημα</small></div><button type="button" class="dots-button" data-demo-action="toast">•••</button></div><p>Αναζητά κατοικία για αγορά, με 2 υπνοδωμάτια και εξωτερικό χώρο.</p><div class="request-tags"><span>Αγορά</span><span>2+ υπνοδωμάτια</span><span>Έως 180.000 €</span></div><div class="matching-box"><div><span class="match-spark">✦</span><span><strong>3 πιθανές αντιστοιχίσεις</strong><small>Με βάση τα κριτήρια του αιτήματος</small></span></div><button type="button" class="text-action" data-demo-action="matches">Προβολή αγγελιών →</button></div></article>
+              <article class="request-card"><div class="request-card-head"><span class="request-avatar avatar-gold">ΑΠ</span><div class="request-person"><strong>Α. Π.</strong><small>Χθες, 16:18 · Demo αίτημα</small></div><span class="request-state">Σε εξέλιξη</span></div><p>Ενδιαφέρεται για οικόπεδο εντός σχεδίου, άρτιο και οικοδομήσιμο.</p><div class="request-tags"><span>Οικόπεδο</span><span>Εντός σχεδίου</span><span>400+ τ.μ.</span></div><div class="matching-box"><div><span class="match-spark">✦</span><span><strong>1 πιθανή αντιστοίχιση</strong><small>Τα κριτήρια αντιστοιχούν σε δείγμα αγγελίας</small></span></div><button type="button" class="text-action" data-demo-action="matches">Προβολή αγγελίας →</button></div></article>
+              <article class="request-card"><div class="request-card-head"><span class="request-avatar avatar-mint">ΕΔ</span><div class="request-person"><strong>Ε. Δ.</strong><small>17 Ιουνίου · Demo αίτημα</small></div><span class="request-state">Απαντήθηκε</span></div><p>Ζητά πληροφορίες για ενοικίαση επιπλωμένου διαμερίσματος.</p><div class="request-tags"><span>Ενοικίαση</span><span>Επιπλωμένο</span><span>Έως 700 € / μήνα</span></div></article>
+            </div>
+          </section>
+
+          <section class="demo-view" data-view="assignments">
+            <div class="page-heading"><div><span class="page-kicker">ΠΕΛΑΤΕΣ · DEMO</span><h1>Αναθέσεις</h1><p>Οργάνωσε αναζητήσεις που έχει αναλάβει το γραφείο.</p></div><button type="button" class="btn-secondary" data-demo-action="toast">＋ Νέα ανάθεση</button></div>
+            <div class="surface-grid">
+              <article class="surface-card assignment-card"><div class="assignment-status"><span class="table-status status-active">Ενεργή</span><span class="muted-code">DEMO-021</span></div><h2>Κατοικία για οικογένεια</h2><p>Κριτήρια αναζήτησης που έχουν δοθεί στο γραφείο.</p><div class="request-tags"><span>Αγορά</span><span>2–3 υπνοδωμάτια</span><span>Έως 200.000 €</span></div><div class="assignment-progress"><span>Αντιστοιχίσεις</span><strong>4 δείγματα</strong></div><button class="btn-outline full" type="button" data-demo-action="matches">Δείτε προτάσεις</button></article>
+              <article class="surface-card assignment-card"><div class="assignment-status"><span class="table-status status-review">Σε αναζήτηση</span><span class="muted-code">DEMO-020</span></div><h2>Οικόπεδο για κατοικία</h2><p>Ανάθεση αναζήτησης με επιλεγμένα χαρακτηριστικά.</p><div class="request-tags"><span>Οικόπεδο</span><span>Οικοδομήσιμο</span><span>400+ τ.μ.</span></div><div class="assignment-progress"><span>Αντιστοιχίσεις</span><strong>1 δείγμα</strong></div><button class="btn-outline full" type="button" data-demo-action="matches">Δείτε προτάσεις</button></article>
+            </div>
+          </section>
+
+          <section class="demo-view" data-view="reports">
+            <div class="page-heading"><div><span class="page-kicker">ΠΟΙΟΤΗΤΑ ΠΕΡΙΕΧΟΜΕΝΟΥ · DEMO</span><h1>Αναφορές προβλημάτων</h1><p>Αναφορές επισκεπτών για αγγελίες προς έλεγχο.</p></div></div>
+            <div class="surface-card empty-panel"><span class="empty-icon">✓</span><h2>Όλα σε τάξη</h2><p>Δεν υπάρχουν εκκρεμείς αναφορές στο συγκεκριμένο δείγμα.</p></div>
+          </section>
+
+          <section class="demo-view" data-view="statistics">
+            <div class="page-heading"><div><span class="page-kicker">ΑΠΟΔΟΣΗ ΙΣΤΟΣΕΛΙΔΑΣ · DEMO</span><h1>Στατιστικά</h1><p>Ενδεικτική εικόνα επισκεψιμότητας και ενδιαφέροντος.</p></div><select class="period-select"><option>Τελευταίες 30 ημέρες</option><option>Τελευταίες 7 ημέρες</option></select></div>
+            <div class="stat-grid stat-grid-three"><article class="stat-card"><div class="stat-card-top"><span>Προβολές αγγελιών</span><i class="stat-icon blue">↗</i></div><strong>1,284</strong><small>Ενδεικτικά στοιχεία demo</small></article><article class="stat-card"><div class="stat-card-top"><span>Αγαπημένα</span><i class="stat-icon gold">♡</i></div><strong>96</strong><small>Ενδεικτικά στοιχεία demo</small></article><article class="stat-card"><div class="stat-card-top"><span>Αιτήματα</span><i class="stat-icon mint">✉</i></div><strong>18</strong><small>Ενδεικτικά στοιχεία demo</small></article></div>
+            <section class="surface-card chart-card"><div class="surface-heading"><div><h2>Ενδιαφέρον ανά εβδομάδα</h2><p>Δείγμα απεικόνισης στατιστικών</p></div><span class="chart-legend"><i></i>Προβολές</span></div><div class="chart-bars" aria-label="Ενδεικτικό γράφημα"><div style="--bar:34%"><span>1–7</span></div><div style="--bar:48%"><span>8–14</span></div><div style="--bar:42%"><span>15–21</span></div><div style="--bar:64%"><span>22–28</span></div><div style="--bar:56%"><span>29–30</span></div><div style="--bar:77%"><span>01–07</span></div><div style="--bar:67%"><span>08–14</span></div><div style="--bar:91%"><span>15–18</span></div></div></section>
+          </section>
+
+          <section class="demo-view" data-view="services">
+            <div class="page-heading"><div><span class="page-kicker">ΠΕΡΙΕΧΟΜΕΝΟ ΙΣΤΟΣΕΛΙΔΑΣ · DEMO</span><h1>Υπηρεσίες</h1><p>Διαχείριση των υπηρεσιών που προβάλλονται στον ιστότοπο.</p></div><button type="button" class="btn-secondary" data-demo-action="toast">＋ Νέα υπηρεσία</button></div>
+            <div class="surface-card settings-list"><div class="settings-row"><span class="settings-icon">⌂</span><span><strong>Αγορά ακινήτου</strong><small>Υποστήριξη στην αναζήτηση και επιλογή κατοικίας</small></span><b class="table-status status-active">Δημοσιευμένη</b><button type="button" class="row-edit" data-demo-action="toast">Επεξεργασία</button></div><div class="settings-row"><span class="settings-icon">⌑</span><span><strong>Ενοικίαση ακινήτου</strong><small>Κατοικίες και επαγγελματικοί χώροι</small></span><b class="table-status status-active">Δημοσιευμένη</b><button type="button" class="row-edit" data-demo-action="toast">Επεξεργασία</button></div><div class="settings-row"><span class="settings-icon">◇</span><span><strong>Εκτίμηση ακινήτου</strong><small>Επικοινωνία για εκτίμηση και συμβουλευτική</small></span><b class="table-status status-active">Δημοσιευμένη</b><button type="button" class="row-edit" data-demo-action="toast">Επεξεργασία</button></div></div>
+          </section>
+
+          <section class="demo-view" data-view="settings">
+            <div class="page-heading"><div><span class="page-kicker">ΠΡΟΦΙΛ ΕΠΙΧΕΙΡΗΣΗΣ · DEMO</span><h1>Στοιχεία γραφείου</h1><p>Τα στοιχεία και η ταυτότητα που προβάλλονται στη σελίδα.</p></div><button type="button" class="btn-primary" data-demo-action="toast">Αποθήκευση</button></div>
+            <div class="settings-layout"><div class="surface-card settings-form"><div class="form-section"><h2>Βασικές πληροφορίες</h2><label>Όνομα γραφείου<input value="Μεσιτικό γραφείο (demo)" /></label><label>Τηλέφωνο<input value="+30 210 000 0000" /></label><label>Email<input value="demo@example.com" /></label><label>Περιοχή<textarea rows="2">Σαλαμίνα · Ενδεικτικό προφίλ</textarea></label></div><div class="form-section"><h2>Γλώσσες ιστοσελίδας</h2><div class="language-chips"><span>Ελληνικά</span><span>English</span><span>Français</span><span>+ 7 ακόμη</span></div><p class="settings-hint">Η πολυγλωσσική παρουσίαση διαχειρίζεται από τις ρυθμίσεις του πραγματικού συστήματος.</p></div><button type="button" class="btn-primary" data-demo-action="toast">Αποθήκευση demo</button></div><aside class="surface-card settings-side"><span class="settings-icon large">⌂</span><h2>Προεπισκόπηση στοιχείων</h2><p>Οι αλλαγές σε αυτή την προεπισκόπηση δεν αποθηκεύονται και δεν επηρεάζουν την πραγματική ιστοσελίδα.</p><span class="safe-chip"><i></i> Απομονωμένο demo</span></aside></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div class="demo-modal-backdrop" id="listingModal" hidden>
+      <section class="demo-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <header class="modal-head"><div><span class="page-kicker">ΕΠΕΞΕΡΓΑΣΙΑ · DEMO</span><h2 id="modalTitle">Αγγελία δείγματος</h2></div><button type="button" class="modal-close" data-close-modal aria-label="Κλείσιμο">×</button></header>
+        <div class="modal-body"><div class="modal-tabs"><button class="selected" type="button">Βασικά στοιχεία</button><button type="button" data-demo-action="toast">Χαρακτηριστικά</button><button type="button" data-demo-action="toast">Φωτογραφίες</button></div><div class="modal-fields"><label>Τίτλος<input id="mockTitle" value="Φωτεινό διαμέρισμα με θέα" /></label><div class="field-pair"><label>Τιμή (€)<input value="148000" inputmode="numeric" /></label><label>Εμβαδόν (τ.μ.)<input value="82" inputmode="numeric" /></label></div><div class="field-pair"><label>Τύπος<select><option>Αγορά</option><option>Ενοικίαση</option></select></label><label>Κατάσταση<select><option>Ενεργή</option><option>Πρόχειρη</option></select></label></div><label>Περιγραφή<textarea rows="4">Ενδεικτική περιγραφή ακινήτου για την παρουσίαση της διαχείρισης.</textarea></label><div class="mock-image-row"><span class="property-thumb thumb-home"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></svg></span><span><strong>Φωτογραφίες αγγελίας</strong><small>4 εικόνες · δείγμα</small></span><button type="button" class="btn-secondary" data-demo-action="toast">＋ Προσθήκη</button></div></div></div>
+        <footer class="modal-foot"><button type="button" class="btn-secondary" data-close-modal>Κλείσιμο</button><button type="button" class="btn-primary" data-demo-action="save">Αποθήκευση demo</button></footer>
+      </section>
+    </div>
+
+    <div class="demo-toast" id="demoToast" role="status" aria-live="polite"><span>✓</span><p>Αυτή είναι προεπισκόπηση demo. Οι αλλαγές δεν αποθηκεύονται.</p></div>
+    <script>
+      import '../../scripts/rita-admin-demo.js';
+    </script>
+  </body>
+</html>

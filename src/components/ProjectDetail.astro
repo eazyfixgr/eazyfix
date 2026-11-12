@@ -57,6 +57,7 @@ const fallbackIcons = ['layout', 'search', 'sliders', 'map', 'globe', 'heart', '
 const featureIcon = (index: number) => project.featureIcons?.[index] || fallbackIcons[index % fallbackIcons.length];
 const contactHref = locale === 'en' ? '/en/#contact' : '/el/#contact';
 const resolveHref = (href?: string) => (!href || href === 'contact' ? contactHref : href);
+const isRitaProject = project.slug === 'rita-samothraki';
 
 const downloadExt = (project.downloadName ?? project.downloadUrl ?? '').toLowerCase();
 const downloadDefault =
@@ -218,10 +219,19 @@ const downloadDefault =
 
         {showPricing && pricing && (
           <section class="rich-section" id="pricing">
-            <div class="rich-head">
-              {pricing.eyebrow?.[locale] && <span class="eyebrow">{pricing.eyebrow[locale]}</span>}
-              <h2 class="rich-title">{pricing.title[locale]}</h2>
-              {pricing.lead?.[locale] && <p class="rich-lead">{pricing.lead[locale]}</p>}
+            <div class="pricing-head-row">
+              <div class="rich-head">
+                {pricing.eyebrow?.[locale] && <span class="eyebrow">{pricing.eyebrow[locale]}</span>}
+                <h2 class="rich-title">{pricing.title[locale]}</h2>
+                {pricing.lead?.[locale] && <p class="rich-lead">{pricing.lead[locale]}</p>}
+              </div>
+              {isRitaProject && (
+                <a class="pricing-demo-btn" href="/demo/rita-admin">
+                  <Icon name="layout" size={17} />
+                  <span>{locale === 'en' ? 'Try the admin demo' : 'Δοκιμάστε τη διαχείριση'}</span>
+                  <Icon name="arrow-right" size={16} />
+                </a>
+              )}
             </div>
             <div class="pricing-grid">
               {plans.map((plan) => (
@@ -731,6 +741,45 @@ const downloadDefault =
     margin-bottom: 28px;
   }
 
+  .pricing-head-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 28px;
+  }
+
+  .pricing-head-row .rich-head {
+    flex: 1;
+    margin-bottom: 28px;
+  }
+
+  .pricing-demo-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 26px;
+    padding: 12px 16px;
+    border: 1px solid #cbd8e6;
+    border-radius: 10px;
+    background: #f6f9fc;
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 700;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .pricing-demo-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--primary);
+    background: var(--primary-50);
+  }
+
+  .pricing-demo-btn svg:last-child {
+    margin-left: 2px;
+  }
+
   .rich-title {
     font-size: clamp(1.4rem, 2.6vw, 1.9rem);
     margin-bottom: 10px;
@@ -984,6 +1033,16 @@ const downloadDefault =
     .rich-cta {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .pricing-head-row {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .pricing-demo-btn {
+      margin-top: -12px;
+      margin-bottom: 25px;
     }
   }
 
