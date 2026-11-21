@@ -127,9 +127,9 @@ const siteName = business?.name ?? 'EazyFix';
         </a>
 
         <nav class="nav" id="primaryNav">
-          <a href="#work">{t.work}</a>
-          <a href="#about">{t.about}</a>
-          <a href="#contact">{t.contact}</a>
+          <a href={locale === 'en' ? '/en/#work' : '/el/#work'}>{t.work}</a>
+          <a href={locale === 'en' ? '/en/#about' : '/el/#about'}>{t.about}</a>
+          <a href={locale === 'en' ? '/en/#contact' : '/el/#contact'}>{t.contact}</a>
         </nav>
 
         <div class="header-actions">
@@ -137,7 +137,7 @@ const siteName = business?.name ?? 'EazyFix';
             <a href="/el/" class={locale === 'el' ? 'active' : ''}>EL</a>
             <a href="/en/" class={locale === 'en' ? 'active' : ''}>EN</a>
           </div>
-          <a href="#contact" class="btn btn--primary header-cta">{t.cta}</a>
+          <a href={locale === 'en' ? '/en/#contact' : '/el/#contact'} class="btn btn--primary header-cta">{t.cta}</a>
           <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
@@ -171,11 +171,11 @@ const siteName = business?.name ?? 'EazyFix';
 
           <div class="footer-col">
             <h4>{locale === 'en' ? 'Navigation' : 'Πλοήγηση'}</h4>
-            <a href="#work">{t.work}</a>
-            <a href="#about">{t.about}</a>
+            <a href={locale === 'en' ? '/en/#work' : '/el/#work'}>{t.work}</a>
+            <a href={locale === 'en' ? '/en/#about' : '/el/#about'}>{t.about}</a>
             <a href={locale === 'en' ? '/en/meisitika' : '/meisitika'}>{locale === 'en' ? 'Real estate websites' : 'Μεσιτικές ιστοσελίδες'}</a>
             <a href={locale === 'en' ? '/en/templates' : '/templates'}>{t.templates}</a>
-            <a href="#contact">{t.contact}</a>
+            <a href={locale === 'en' ? '/en/#contact' : '/el/#contact'}>{t.contact}</a>
           </div>
 
           <div class="footer-col">
