@@ -4,12 +4,16 @@ interface Props {
   brand: string;
   industry: string;
   from?: string;
+  slug?: string;
 }
 
-const { title, brand, industry, from = 'el' } = Astro.props;
+const { title, brand, industry, from = 'el', slug } = Astro.props;
 const backHref = from === 'en' ? '/en/templates' : '/templates';
 const backLabel = from === 'en' ? 'Back to templates' : 'Πίσω στα πρότυπα';
 const ctaLabel = from === 'en' ? 'I want a site like this' : 'Θέλω τέτοια σελίδα';
+const ctaHref = slug
+  ? `${from === 'en' ? '/en/' : '/'}?template=${encodeURIComponent(slug)}#contact`
+  : '/#contact';
 ---
 
 <!DOCTYPE html>
@@ -35,7 +39,7 @@ const ctaLabel = from === 'en' ? 'I want a site like this' : 'Θέλω τέτο�
           <span class="demo-industry">{industry}</span>
         </div>
         <div class="demo-bar-right">
-          <a href="/#contact" class="demo-cta">{ctaLabel}</a>
+          <a href={ctaHref} class="demo-cta">{ctaLabel}</a>
           <a href={backHref} class="demo-back">{backLabel}</a>
         </div>
       </div>

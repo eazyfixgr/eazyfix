@@ -12,17 +12,23 @@ const copy =
     ? {
         eyebrow: 'Templates',
         title: 'Eight website templates, eight different styles',
-        lead: 'Each template is designed from scratch with its own identity. They are being built one by one — open the ones marked as ready to explore a live demo.',
-        soon: 'Coming soon',
+        lead: 'Open any template to explore it live. If you like one, we adapt it to your business, your content and your brand.',
         view: 'View live demo',
+        ctaTitle: 'Not sure which one fits?',
+        ctaLead: 'Tell me what your business does and I will suggest the right starting point — with a clear quote before any work starts.',
+        ctaButton: 'Request a quote',
       }
     : {
         eyebrow: 'Πρότυπα',
         title: 'Οκτώ πρότυπα ιστοσελίδων, οκτώ διαφορετικά στιλ',
-        lead: 'Κάθε πρότυπο σχεδιάζεται από την αρχή με τη δική του ταυτότητα. Χτίζονται ένα-ένα — άνοιξε όποιο είναι έτοιμο για να δεις ζωντανό demo.',
-        soon: 'Σύντομα κοντά σας',
+        lead: 'Άνοιξε όποιο σου αρέσει και δες το ζωντανά. Αν ταιριάζει στην επιχείρησή σου, το προσαρμόζουμε στο περιεχόμενο, την επωνυμία και τις ανάγκες σου.',
         view: 'Δείτε το demo',
+        ctaTitle: 'Δεν είστε σίγουροι ποιο ταιριάζει;',
+        ctaLead: 'Πείτε μου τι κάνει η επιχείρησή σας και θα σας προτείνω τη σωστή αφετηρία — με καθαρή προσφορά πριν ξεκινήσει οποιαδήποτε εργασία.',
+        ctaButton: 'Ζητήστε προσφορά',
       };
+
+const contactHref = locale === 'en' ? '/en/#contact' : '/#contact';
 ---
 
 <section class="page-hero">
@@ -39,31 +45,43 @@ const copy =
     <div class="gallery-grid">
       {templates.map((template) => {
         const href = template.built ? `/demo/${template.slug}?from=${locale}` : null;
+        const preview = template.preview ?? `/demo-previews/${template.slug}.jpg`;
         return (
           <article class:list={['tcard', { 'tcard--live': template.built }]}>
             {href && <a class="tcard-overlay" href={href} aria-label={template.name[locale]} />}
-            <div class="tcard-top">
+            <div class="tcard-media">
+              {template.built ? (
+                <img src={preview} alt={`${template.name[locale]} — demo`} loading="lazy" />
+              ) : (
+                <div class="tcard-placeholder" aria-hidden="true" />
+              )}
               <span class="tcard-num">{String(template.number).padStart(2, '0')}</span>
               <span class="tcard-cat">{template.category[locale]}</span>
             </div>
-            <div class="tcard-body">
+            <div class="tcard-content">
               <h3>{template.name[locale]}</h3>
               <p>{template.short[locale]}</p>
+              {template.built && (
+                <span class="tcard-live">
+                  {copy.view}
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </span>
+              )}
             </div>
-            {template.built ? (
-              <span class="tcard-live">
-                {copy.view}
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-              </span>
-            ) : (
-              <span class="tcard-soon">
-                <span class="dot" />
-                {copy.soon}
-              </span>
-            )}
           </article>
         );
       })}
+    </div>
+
+    <div class="templates-cta">
+      <div>
+        <h2>{copy.ctaTitle}</h2>
+        <p>{copy.ctaLead}</p>
+      </div>
+      <a class="btn btn--primary" href={contactHref}>
+        {copy.ctaButton}
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </a>
     </div>
   </div>
 </section>
@@ -111,15 +129,12 @@ const copy =
   .tcard {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 220px;
+    position: relative;
+    overflow: hidden;
     background: #fff;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   }
 
   .tcard::before {
@@ -127,13 +142,14 @@ const copy =
     position: absolute;
     inset: 0 0 auto 0;
     height: 3px;
+    z-index: 2;
     background: linear-gradient(90deg, var(--primary), #22d3ee);
     opacity: 0;
     transition: opacity 0.2s ease;
   }
 
   .tcard:hover {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-md);
     border-color: transparent;
   }
@@ -145,80 +161,138 @@ const copy =
   .tcard-overlay {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    z-index: 3;
   }
 
-  .tcard-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 18px;
+  .tcard-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #e8edf4;
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  .tcard-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.45s ease;
+  }
+
+  .tcard:hover .tcard-media img {
+    transform: scale(1.03);
+  }
+
+  .tcard-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, var(--primary-50), #eef2f8);
+  }
+
+  .tcard-num,
+  .tcard-cat {
+    position: absolute;
+    top: 12px;
+    z-index: 2;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 5px 10px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
   }
 
   .tcard-num {
-    font-family: var(--font-head);
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--line);
-    line-height: 1;
+    left: 12px;
+    background: rgba(15, 23, 42, 0.72);
+    color: #fff;
   }
 
   .tcard-cat {
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.92);
     color: var(--primary);
-    background: var(--primary-50);
-    padding: 5px 12px;
-    border-radius: 999px;
+    text-transform: uppercase;
   }
 
-  .tcard-body h3 {
+  .tcard-content {
+    flex: 1;
+    padding: 22px 24px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tcard-content h3 {
     font-family: var(--font-head);
-    font-size: 1.2rem;
+    font-size: 1.16rem;
     margin-bottom: 8px;
   }
 
-  .tcard-body p {
+  .tcard-content p {
     color: var(--muted);
-    font-size: 0.93rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
   }
 
-  .tcard-soon,
   .tcard-live {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 22px;
+    margin-top: 18px;
+    color: var(--primary);
     font-size: 0.82rem;
     font-weight: 700;
-  }
-
-  .tcard-soon {
-    color: var(--muted);
-  }
-
-  .tcard-soon .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #f59e0b;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
-  }
-
-  .tcard-live {
-    color: var(--primary);
   }
 
   .tcard--live:hover .tcard-live {
     text-decoration: underline;
   }
 
+  .templates-cta {
+    margin-top: 48px;
+    padding: 34px 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .templates-cta h2 {
+    color: #fff;
+    font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+    margin-bottom: 8px;
+  }
+
+  .templates-cta p {
+    color: #cbd5e1;
+    max-width: 62ch;
+    font-size: 0.95rem;
+  }
+
+  .templates-cta .btn {
+    flex-shrink: 0;
+  }
+
   @media (max-width: 980px) {
     .gallery-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .templates-cta {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 28px;
+    }
+
+    .templates-cta .btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 

@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Hero from '../../components/Hero.astro';
+import FeaturedWork from '../../components/FeaturedWork.astro';
 import CategoryExplorer from '../../components/CategoryExplorer.astro';
 import About from '../../components/About.astro';
 import Contact from '../../components/Contact.astro';
@@ -11,6 +12,7 @@ const locale = 'el';
 const business = await getBusiness();
 const projects = await getProjects();
 const content = await getSiteContent();
+const featured = projects.find((project) => project.slug === 'rita-samothraki' && project.enabled);
 ---
 
 <Layout
@@ -20,6 +22,7 @@ const content = await getSiteContent();
   business={business}
 >
   <Hero hero={content.hero} locale={locale} />
+  <FeaturedWork project={featured} locale={locale} />
   <CategoryExplorer locale={locale} projects={projects} />
   <About about={content.about} social={site.social} locale={locale} />
   <Contact business={business} contact={content.contact} locale={locale} />

@@ -19,22 +19,22 @@ export const site = {
     },
   },
   hero: {
-    badge: { el: 'Full-Stack Developer & Τεχνικός Υπολογιστών', en: 'Full-Stack Developer & IT Technician' },
-    title: { el: 'Αξιόπιστες τεχνολογικές λύσεις.', en: 'Reliable technology solutions.' },
+    badge: { el: 'Κατασκευή ιστοσελίδων & εφαρμογών', en: 'Websites & apps for business' },
+    title: { el: 'Ιστοσελίδες και εφαρμογές για τη δική σας επιχείρηση.', en: 'Websites and apps for your business.' },
     titleAccent: {
-      el: 'Από το service υπολογιστών μέχρι custom εφαρμογές.',
-      en: 'From computer service to custom apps.',
+      el: 'Από την ιδέα στην υλοποίηση, με έναν άνθρωπο υπεύθυνο.',
+      en: 'From idea to launch, with one person accountable.',
     },
     subtitle: {
-      el: 'Πίσω από το EazyFix προσφέρω εξειδικευμένες υπηρεσίες επισκευής υπολογιστών, ανάπτυξη σύγχρονων ιστοσελίδων, εφαρμογών και παιχνιδιών Android, καθώς και custom εργαλείων για Windows.',
-      en: 'Behind EazyFix I provide specialised computer repair services, modern website development, Android apps and games, and custom Windows tools.',
+      el: 'Σχεδιάζω επαγγελματικές ιστοσελίδες, συστήματα διαχείρισης και εφαρμογές για επιχειρήσεις. Αναλαμβάνω hosting, domain, υποστήριξη και ό,τι χρειαστεί μετά την παράδοση.',
+      en: 'I design professional websites, management systems and apps for businesses. I handle hosting, domain, support and everything after launch.',
     },
     primaryCta: { el: 'Δείτε έτοιμες σελίδες', en: 'See ready-made sites' },
-    secondaryCta: { el: 'Επικοινωνία', en: 'Contact' },
+    secondaryCta: { el: 'Ζητήστε προσφορά', en: 'Request a quote' },
     stats: [
-      { value: '5', label: { el: 'τομείς', en: 'fields' } },
-      { value: '30+', label: { el: 'projects', en: 'projects' } },
-      { value: '3', label: { el: 'πλατφόρμες', en: 'platforms' } },
+      { value: '6', label: { el: 'τομείς', en: 'fields' } },
+      { value: '40+', label: { el: 'projects', en: 'projects' } },
+      { value: '8', label: { el: 'πρότυπα', en: 'templates' } },
     ],
   },
   about: {

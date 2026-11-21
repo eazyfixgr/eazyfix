@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { COOKIE_NAME, isValidSession } from '../../../lib/auth';
 import { getProjects, saveProjects } from '../../../lib/content';
 import type { Project } from '../../../data/projects';
+import { validateProjects } from '../../../lib/project-validation';
 
 export const prerender = false;
 
@@ -31,7 +32,8 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     return json({ error: 'invalid_json' }, 400);
   }
 
-  if (!Array.isArray(body)) return json({ error: 'invalid_payload' }, 400);
+  const validationError = validateProjects(body);
+  if (validationError) return json({ error: validationError }, 400);
 
   await saveProjects(body);
   return json({ ok: true });

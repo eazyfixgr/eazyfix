@@ -43,6 +43,7 @@ const from = Astro.url.searchParams.get('from') === 'en' ? 'en' : 'el';
   brand={template.name.el}
   industry={template.category.el}
   from={from}
+  slug={template.slug}
 >
   <Demo />
 </DemoLayout>

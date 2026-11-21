@@ -1,0 +1,293 @@
+---
+import Icon from './Icon.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+  project?: Project;
+  locale: 'el' | 'en';
+}
+
+const { project, locale } = Astro.props;
+const shot = project?.screenshots?.find(Boolean);
+const demoHref = locale === 'en' ? '/demo/rita-admin' : '/demo/rita-admin';
+const pricingHref = locale === 'en' ? '/en/projects/rita-samothraki#pricing' : '/projects/rita-samothraki#pricing';
+
+const copy =
+  locale === 'en'
+    ? {
+        eyebrow: 'A real project, live today',
+        title: 'A real estate office with a complete property management system',
+        lead: 'This is not a mock-up. The agency publishes its properties, searches listings and organises enquiries through a system built and supported by EazyFix.',
+        points: [
+          'Property listings, photos and content managed from an admin panel',
+          'Smart search, filters, map, favourites and comparison',
+          'Enquiry matching and email proposals, in 10 languages',
+        ],
+        demo: 'Try the management demo',
+        pricing: 'See build pricing',
+        site: 'Visit the live website',
+        badge: 'In production',
+      }
+    : {
+        eyebrow: 'Πραγματικό έργο, σε λειτουργία',
+        title: 'Μεσιτικό γραφείο με ολοκληρωμένο σύστημα διαχείρισης ακινήτων',
+        lead: 'Δεν είναι μακέτα. Το γραφείο δημοσιεύει ακίνητα, κάνει αναζήτηση και οργανώνει τα αιτήματα των πελατών του μέσα από σύστημα που κατασκεύασα και υποστηρίζω.',
+        points: [
+          'Αγγελίες, φωτογραφίες και περιεχόμενο από admin panel',
+          'Έξυπνη αναζήτηση, φίλτρα, χάρτης, αγαπημένα και σύγκριση',
+          'Αντιστοίχιση αιτημάτων και προτάσεις email, σε 10 γλώσσες',
+        ],
+        demo: 'Δοκιμάστε τη διαχείριση',
+        pricing: 'Δείτε το κόστος κατασκευής',
+        site: 'Δείτε το πραγματικό site',
+        badge: 'Σε λειτουργία',
+      };
+---
+
+{project && (
+  <section class="featured" id="featured">
+    <div class="container featured-grid">
+      <div class="featured-visual">
+        <div class="browser">
+          <div class="browser-bar">
+            <span class="browser-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="browser-url">realestate-samothraki.gr</span>
+          </div>
+          <div class="browser-screen">
+            {shot ? (
+              <img src={shot} alt={project.name} loading="lazy" />
+            ) : (
+              <div class="browser-placeholder"><Icon name="building" size={38} /></div>
+            )}
+          </div>
+        </div>
+        <span class="live-badge"><span class="live-dot"></span>{copy.badge}</span>
+      </div>
+
+      <div class="featured-copy">
+        <span class="eyebrow">{copy.eyebrow}</span>
+        <h2>{copy.title}</h2>
+        <p class="featured-lead">{copy.lead}</p>
+        <ul class="featured-points">
+          {copy.points.map((point) => (
+            <li>
+              <span class="point-check"><Icon name="check" size={13} /></span>
+              {point}
+            </li>
+          ))}
+        </ul>
+        <div class="featured-actions">
+          <a class="btn btn--primary" href={demoHref}>
+            {copy.demo}
+            <Icon name="layout" size={17} />
+          </a>
+          <a class="btn btn--outline" href={pricingHref}>
+            {copy.pricing}
+            <Icon name="arrow-right" size={17} />
+          </a>
+        </div>
+        <a class="featured-site-link" href={project.url} target="_blank" rel="noopener">
+          {copy.site}
+          <Icon name="external-link" size={15} />
+        </a>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .featured {
+    padding: 84px 0;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 56px;
+    align-items: center;
+  }
+
+  .featured-visual {
+    position: relative;
+  }
+
+  .browser {
+    overflow: hidden;
+    border: 1px solid #dbe3ec;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 30px 70px -35px rgba(15, 23, 42, 0.45);
+  }
+
+  .browser-bar {
+    height: 38px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #e8edf3;
+    background: #f7f9fc;
+  }
+
+  .browser-dots {
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  .browser-dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d7dee7;
+  }
+
+  .browser-dots i:first-child { background: #f0b1a6; }
+  .browser-dots i:nth-child(2) { background: #f2d19a; }
+  .browser-dots i:last-child { background: #a9dbb9; }
+
+  .browser-url {
+    flex: 1;
+    padding: 4px 10px;
+    border: 1px solid #e8edf3;
+    border-radius: 6px;
+    background: #fff;
+    color: #8390a0;
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+  }
+
+  .browser-screen {
+    aspect-ratio: 16 / 10.5;
+    overflow: hidden;
+    background: #eef2f7;
+  }
+
+  .browser-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .browser-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--primary);
+    background: linear-gradient(150deg, var(--primary-50), #fff);
+  }
+
+  .live-badge {
+    position: absolute;
+    right: 18px;
+    bottom: -15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid #dce7e1;
+    border-radius: 999px;
+    background: #fff;
+    color: #287a5b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    box-shadow: 0 12px 30px -18px rgba(15, 23, 42, 0.5);
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #34a07a;
+    box-shadow: 0 0 0 4px rgba(52, 160, 122, 0.16);
+  }
+
+  .featured-copy h2 {
+    margin: 14px 0 16px;
+    font-size: clamp(1.65rem, 3vw, 2.3rem);
+    line-height: 1.16;
+    letter-spacing: -0.03em;
+  }
+
+  .featured-lead {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .featured-points {
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 11px;
+  }
+
+  .featured-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+
+  .point-check {
+    width: 21px;
+    height: 21px;
+    margin-top: 1px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--primary-50);
+    color: var(--primary);
+  }
+
+  .featured-actions {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+  }
+
+  .featured-site-link {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .featured-site-link:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 980px) {
+    .featured {
+      padding: 64px 0;
+    }
+
+    .featured-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .live-badge {
+      bottom: 14px;
+      right: 14px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .featured-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

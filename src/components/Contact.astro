@@ -145,11 +145,40 @@ const labels =
         {labels.submit}
         <Icon name="arrow-right" size={18} />
       </button>
+      <p class="form-alt">
+        {locale === 'en' ? 'Prefer email? Write to ' : 'Προτιμάτε email; Γράψτε στο '}
+        <a href={`mailto:${business.email}?subject=${encodeURIComponent(locale === 'en' ? 'Quote request — EazyFix' : 'Αίτημα προσφοράς — EazyFix')}`}>
+          {business.email}
+        </a>
+      </p>
     </form>
   </div>
 </section>
 
 <script>
+  const templateNames = {
+    el: {
+      dikigoriko: 'Δικηγορικό Γραφείο',
+      odontiatreio: 'Οδοντιατρείο',
+      kallopismos: 'Στούντιο Καλλοπισμού',
+      rouxa: 'Κατάστημα Ρούχων',
+      keri: 'Χειροποίητα Κεριά',
+      'enoikiasi-autokiniton': 'Ενοικιάσεις Αυτοκινήτων',
+      estiatorio: 'Εστιατόριο',
+      'kreopoleio-xatoupis': 'Κρεοπωλείο',
+    },
+    en: {
+      dikigoriko: 'Law Office',
+      odontiatreio: 'Dental Clinic',
+      kallopismos: 'Beauty Studio',
+      rouxa: 'Clothing Store',
+      keri: 'Handmade Candles',
+      'enoikiasi-autokiniton': 'Car Rentals',
+      estiatorio: 'Restaurant',
+      'kreopoleio-xatoupis': 'Butcher Shop',
+    },
+  };
+
   const form = document.getElementById('contactForm');
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -187,6 +216,23 @@ const labels =
     const text = `${header}%0A%0A${labels.name}: ${data.get('name')}%0A${labels.phone}: ${data.get('phone')}%0A${labels.service}: ${serviceNames[service] ?? service}%0A${labels.message}: ${data.get('message')}`;
     window.open(`https://wa.me/${whatsapp}?text=${text}`, '_blank');
   });
+
+  const requestedTemplate = new URLSearchParams(window.location.search).get('template');
+  if (requestedTemplate && form) {
+    const locale = form.dataset.locale === 'en' ? 'en' : 'el';
+    const name = templateNames[locale][requestedTemplate];
+    if (name) {
+      const service = document.getElementById('service');
+      const message = document.getElementById('message');
+      if (service instanceof HTMLSelectElement) service.value = 'website';
+      if (message instanceof HTMLTextAreaElement) {
+        message.value =
+          locale === 'en'
+            ? `I'm interested in a website based on the "${name}" template.`
+            : `Ενδιαφέρομαι για ιστοσελίδα βασισμένη στο πρότυπο «${name}».`;
+      }
+    }
+  }
 </script>
 
 <style>
@@ -315,6 +361,20 @@ const labels =
     color: var(--muted);
     font-size: 0.8rem;
     line-height: 1.5;
+  }
+
+  .form-alt {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .form-alt a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   @media (max-width: 860px) {

@@ -6,6 +6,7 @@ export interface Template {
   short: { el: string; en: string };
   style: string;
   built: boolean;
+  preview?: string;
 }
 
 export const templates: Template[] = [
