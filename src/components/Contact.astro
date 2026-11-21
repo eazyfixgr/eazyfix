@@ -233,6 +233,20 @@ const labels =
       }
     }
   }
+
+  const requestedService = new URLSearchParams(window.location.search).get('service');
+  if (requestedService === 'real-estate' && form) {
+    const locale = form.dataset.locale === 'en' ? 'en' : 'el';
+    const service = document.getElementById('service');
+    const message = document.getElementById('message');
+    if (service instanceof HTMLSelectElement) service.value = 'website';
+    if (message instanceof HTMLTextAreaElement) {
+      message.value =
+        locale === 'en'
+          ? 'I am interested in a real estate website with property management, search and enquiry matching.'
+          : 'Ενδιαφέρομαι για μεσιτική ιστοσελίδα με διαχείριση ακινήτων, αναζήτηση και αντιστοίχιση αιτημάτων.';
+    }
+  }
 </script>
 
 <style>

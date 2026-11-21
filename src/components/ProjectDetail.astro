@@ -56,7 +56,13 @@ const showSidebarFeatures = features.length > 0 && !hasRich;
 const fallbackIcons = ['layout', 'search', 'sliders', 'map', 'globe', 'heart', 'file-text', 'git-compare', 'users', 'devices', 'zap', 'wrench'];
 const featureIcon = (index: number) => project.featureIcons?.[index] || fallbackIcons[index % fallbackIcons.length];
 const contactHref = locale === 'en' ? '/en/#contact' : '/el/#contact';
-const resolveHref = (href?: string) => (!href || href === 'contact' ? contactHref : href);
+const realEstateContactHref = locale === 'en' ? '/en/?service=real-estate#contact' : '/el/?service=real-estate#contact';
+const resolveHref = (href?: string) =>
+  !href || href === 'contact'
+    ? isRitaProject
+      ? realEstateContactHref
+      : contactHref
+    : href;
 const isRitaProject = project.slug === 'rita-samothraki';
 
 const downloadExt = (project.downloadName ?? project.downloadUrl ?? '').toLowerCase();
