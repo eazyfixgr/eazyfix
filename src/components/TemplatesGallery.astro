@@ -1,27 +1,62 @@
 ---
 import { templates } from '../data/templates';
+import type { Project } from '../data/projects';
 
 interface Props {
   locale: 'el' | 'en';
+  projects?: Project[];
 }
 
-const { locale } = Astro.props;
+const { locale, projects = [] } = Astro.props;
+const realEstate = projects.find((project) => project.slug === 'rita-samothraki' && project.enabled);
+const realEstateShot = realEstate?.screenshots?.find(Boolean) ?? '/og.png';
+const realEstateUrl = realEstate?.url ?? 'https://realestate-samothraki.gr/';
+const realEstateProjectHref = locale === 'en' ? '/en/projects/rita-samothraki' : '/projects/rita-samothraki';
+const butcherHref = `/demo/kreopoleio-xatoupis?from=${locale}`;
 
 const copy =
   locale === 'en'
     ? {
-        eyebrow: 'Templates',
-        title: 'Eight website templates, eight different styles',
-        lead: 'Open any template to explore it live. If you like one, we adapt it to your business, your content and your brand.',
+        eyebrow: 'Ready-made pages',
+        title: 'Two live websites and eight templates for your business',
+        lead: 'See two websites in real use — the real estate agency and the butcher shop — then explore the other seven templates.',
+        featuredEyebrow: 'Live examples',
+        featuredTitle: 'Websites that already work',
+        featuredLead: 'Open a real website and see how it could work for your business.',
+        live: 'Live',
+        demo: 'Live demo',
+        realEstateTitle: 'Rita Samothraki — Real Estate Agency',
+        realEstateText: 'Property listings, smart search, map and a complete management system.',
+        realEstateCta: 'Visit the real website',
+        realEstateProject: 'View the project',
+        butcherTitle: 'Butcher Shop',
+        butcherText: 'A family butcher shop with products, heritage and online orders.',
+        butcherCta: 'View the demo',
+        gridTitle: 'The other seven templates',
+        gridLead: 'Open any template to explore it live. If you like one, we adapt it to your business, your content and your brand.',
         view: 'View live demo',
         ctaTitle: 'Not sure which one fits?',
         ctaLead: 'Tell me what your business does and I will suggest the right starting point — with a clear quote before any work starts.',
         ctaButton: 'Request a quote',
       }
     : {
-        eyebrow: 'Πρότυπα',
-        title: 'Οκτώ πρότυπα ιστοσελίδων, οκτώ διαφορετικά στιλ',
-        lead: 'Άνοιξε όποιο σου αρέσει και δες το ζωντανά. Αν ταιριάζει στην επιχείρησή σου, το προσαρμόζουμε στο περιεχόμενο, την επωνυμία και τις ανάγκες σου.',
+        eyebrow: 'Έτοιμες σελίδες',
+        title: 'Δύο ζωντανές σελίδες και οκτώ πρότυπα για την επιχείρησή σας',
+        lead: 'Δες πρώτα δύο σελίδες σε πραγματική χρήση — το μεσιτικό γραφείο και το κρεοπωλείο — και μετά τα υπόλοιπα επτά πρότυπα.',
+        featuredEyebrow: 'Ζωντανά παραδείγματα',
+        featuredTitle: 'Σελίδες που δουλεύουν ήδη',
+        featuredLead: 'Άνοιξε μια πραγματική σελίδα και δες πώς μπορεί να δουλέψει για την επιχείρησή σου.',
+        live: 'Σε λειτουργία',
+        demo: 'LIVE DEMO',
+        realEstateTitle: 'Ρίτα Σαμοθράκη — Μεσιτικό Γραφείο',
+        realEstateText: 'Αγγελίες ακινήτων, έξυπνη αναζήτηση, χάρτης και ολοκληρωμένο σύστημα διαχείρισης.',
+        realEstateCta: 'Δείτε το πραγματικό site',
+        realEstateProject: 'Δείτε το project',
+        butcherTitle: 'Κρεοπωλείο',
+        butcherText: 'Οικογενειακό κρεοπωλείο με προϊόντα, ιστορία και online παραγγελίες.',
+        butcherCta: 'Δείτε το demo',
+        gridTitle: 'Τα υπόλοιπα επτά πρότυπα',
+        gridLead: 'Άνοιξε όποιο σου αρέσει και δες το ζωντανά. Αν ταιριάζει στην επιχείρησή σου, το προσαρμόζουμε στο περιεχόμενο, την επωνυμία και τις ανάγκες σου.',
         view: 'Δείτε το demo',
         ctaTitle: 'Δεν είστε σίγουροι ποιο ταιριάζει;',
         ctaLead: 'Πείτε μου τι κάνει η επιχείρησή σας και θα σας προτείνω τη σωστή αφετηρία — με καθαρή προσφορά πριν ξεκινήσει οποιαδήποτε εργασία.',
@@ -29,6 +64,7 @@ const copy =
       };
 
 const contactHref = locale === 'en' ? '/en/#contact' : '/#contact';
+const remainingTemplates = templates.filter((template) => template.slug !== 'kreopoleio-xatoupis');
 ---
 
 <section class="page-hero">
@@ -40,10 +76,61 @@ const contactHref = locale === 'en' ? '/en/#contact' : '/#contact';
   </div>
 </section>
 
-<section class="section">
+<section class="featured-examples">
   <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">{copy.featuredEyebrow}</span>
+      <h2 class="h2">{copy.featuredTitle}</h2>
+      <p class="lead">{copy.featuredLead}</p>
+    </div>
+
+    <div class="example-grid">
+      <article class="example-card">
+        <a class="example-overlay" href={realEstateUrl} target="_blank" rel="noopener" aria-label={copy.realEstateTitle} />
+        <div class="example-media">
+          <img src={realEstateShot} alt={copy.realEstateTitle} loading="lazy" />
+          <span class="example-badge example-badge--live"><i></i>{copy.live}</span>
+        </div>
+        <div class="example-body">
+          <h3>{copy.realEstateTitle}</h3>
+          <p>{copy.realEstateText}</p>
+          <span class="example-cta">
+            {copy.realEstateCta}
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></svg>
+          </span>
+          <a class="example-sub" href={realEstateProjectHref}>{copy.realEstateProject}</a>
+        </div>
+      </article>
+
+      <article class="example-card">
+        <a class="example-overlay" href={butcherHref} aria-label={copy.butcherTitle} />
+        <div class="example-media">
+          <img src="/demo-previews/kreopoleio-xatoupis.jpg" alt={copy.butcherTitle} loading="lazy" />
+          <span class="example-badge"><i></i>{copy.demo}</span>
+        </div>
+        <div class="example-body">
+          <h3>{copy.butcherTitle}</h3>
+          <p>{copy.butcherText}</p>
+          <span class="example-cta">
+            {copy.butcherCta}
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section templates-section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">{locale === 'en' ? 'Templates' : 'Πρότυπα'}</span>
+      <h2 class="h2">{copy.gridTitle}</h2>
+      <p class="lead">{copy.gridLead}</p>
+    </div>
+
     <div class="gallery-grid">
-      {templates.map((template) => {
+      {remainingTemplates.map((template) => {
         const href = template.built ? `/demo/${template.slug}?from=${locale}` : null;
         const preview = template.preview ?? `/demo-previews/${template.slug}.jpg`;
         return (
@@ -105,19 +192,163 @@ const contactHref = locale === 'en' ? '/en/#contact' : '/#contact';
 
   .page-hero .container {
     position: relative;
-    max-width: 820px;
+    max-width: 900px;
   }
 
   .page-title {
     color: #fff;
-    font-size: clamp(2rem, 4.4vw, 3rem);
+    font-size: clamp(2rem, 4.2vw, 2.9rem);
+    text-wrap: balance;
   }
 
   .page-lead {
     color: #cbd5e1;
     font-size: 1.1rem;
     margin-top: 20px;
-    max-width: 62ch;
+    max-width: 66ch;
+  }
+
+  .featured-examples {
+    padding: 76px 0 24px;
+    background: var(--bg-soft);
+  }
+
+  .featured-examples .section-head,
+  .templates-section .section-head {
+    max-width: 720px;
+    margin-bottom: 30px;
+  }
+
+  .example-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .example-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+
+  .example-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .example-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  .example-media {
+    position: relative;
+    aspect-ratio: 16 / 9.5;
+    overflow: hidden;
+    background: #e8edf4;
+    border-bottom: 1px solid var(--line-2);
+  }
+
+  .example-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.5s ease;
+  }
+
+  .example-card:hover .example-media img {
+    transform: scale(1.025);
+  }
+
+  .example-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.72);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(6px);
+  }
+
+  .example-badge i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+  }
+
+  .example-badge--live {
+    background: rgba(255, 255, 255, 0.94);
+    color: #1f7a58;
+  }
+
+  .example-badge--live i {
+    background: #2f9c72;
+    box-shadow: 0 0 0 3px rgba(47, 156, 114, 0.16);
+  }
+
+  .example-body {
+    padding: 24px 26px 26px;
+    position: relative;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .example-body h3 {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .example-body p {
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+
+  .example-cta {
+    margin-top: 17px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .example-sub {
+    position: relative;
+    z-index: 4;
+    pointer-events: auto;
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .example-sub:hover {
+    color: var(--primary);
+  }
+
+  .templates-section {
+    padding-top: 64px;
   }
 
   .gallery-grid {
@@ -283,7 +514,11 @@ const contactHref = locale === 'en' ? '/en/#contact' : '/#contact';
     }
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 760px) {
+    .example-grid {
+      grid-template-columns: 1fr;
+    }
+
     .templates-cta {
       flex-direction: column;
       align-items: flex-start;

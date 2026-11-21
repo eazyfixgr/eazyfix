@@ -1,17 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import TemplatesGallery from '../components/TemplatesGallery.astro';
-import { getBusiness } from '../lib/content';
+import { getBusiness, getProjects } from '../lib/content';
 
 const locale = 'el';
 const business = await getBusiness();
+const projects = await getProjects();
 ---
 
 <Layout
   title="Πρότυπα Ιστοσελίδων - EazyFix"
-  description="Έτοιμα πρότυπα ιστοσελίδων για κάθε επάγγελμα. Περιηγηθείτε σε λειτουργικά demos."
+  description="Δύο ζωντανές σελίδες και έτοιμα πρότυπα ιστοσελίδων για κάθε επάγγελμα. Δείτε λειτουργικά demos."
   locale={locale}
   business={business}
 >
-  <TemplatesGallery locale={locale} />
+  <TemplatesGallery locale={locale} projects={projects} />
 </Layout>
