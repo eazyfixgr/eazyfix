@@ -4,9 +4,25 @@ import { getProjects } from '../lib/content';
 export const prerender = false;
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = site ?? new URL('https://eazyfix.vivinails.workers.dev');
+  const base = site ?? new URL('https://eazyfix.gr');
 
-  const pages = ['/', '/el/', '/en/', '/templates', '/en/templates'];
+  const pages = [
+    '/',
+    '/el/',
+    '/en/',
+    '/templates',
+    '/en/templates',
+    '/meisitika',
+    '/en/meisitika',
+    '/privacy',
+    '/en/privacy',
+    '/cookies',
+    '/en/cookies',
+    '/terms',
+    '/en/terms',
+    '/imprint',
+    '/en/imprint',
+  ];
   const projects = await getProjects();
   projects
     .filter((project) => project.enabled)

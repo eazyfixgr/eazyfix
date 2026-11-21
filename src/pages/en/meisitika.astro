@@ -1,0 +1,10 @@
+---
+import RealEstateLanding from '../../components/RealEstateLanding.astro';
+import { getBusiness, getProjects } from '../../lib/content';
+
+const business = await getBusiness();
+const projects = await getProjects();
+const project = projects.find((item) => item.slug === 'rita-samothraki' && item.enabled);
+---
+
+<RealEstateLanding project={project} business={business} locale="en" />

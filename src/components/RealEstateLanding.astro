@@ -1,0 +1,969 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from './Icon.astro';
+import type { Project } from '../data/projects';
+import type { Business } from '../data/site';
+
+interface Props {
+  project?: Project;
+  business: Business;
+  locale: 'el' | 'en';
+}
+
+const { project, business, locale } = Astro.props;
+const shot = project?.screenshots?.find(Boolean);
+const pricing = project?.pricing;
+const plans = pricing?.plans ?? [];
+const service = project?.service;
+
+const copy =
+  locale === 'en'
+    ? {
+        title: 'Real estate website development | EazyFix',
+        description:
+          'Website development for real estate agencies with listing management, smart search, map and enquiry matching. See a real project and pricing.',
+        eyebrow: 'For real estate agencies',
+        h1: 'A real estate website that runs the office, not just a brochure',
+        lead:
+          'A complete system for presenting properties, managing listings and organising enquiries — built for your agency and supported after launch.',
+        quote: 'Request a quote',
+        live: 'Visit the real website',
+        demo: 'Try the management demo',
+        facts: ['A real project in production', '10 languages', 'Admin panel included'],
+        proofEyebrow: 'A real project',
+        proofTitle: 'Built for an agency, used every day',
+        proofText:
+          'The Rita Samothraki website combines property showcases with a management system: listings and photos, smart search, map, favourites, comparison and enquiry matching.',
+        proofPoints: [
+          'Listings, photos and content managed from the admin panel',
+          'Smart search, advanced filters, interactive map and comparison',
+          'Enquiry matching and email proposals in 10 languages',
+        ],
+        proofLink: 'See the project details',
+        featuresEyebrow: 'What is included',
+        featuresTitle: 'Everything a real estate office needs',
+        featuresLead: 'Designed for the daily work of an agency, not only for the homepage.',
+        features: [
+          ['Listing and photo management', 'Add, edit and organise properties and photos from the admin panel.', 'layout'],
+          ['Smart property search', 'Visitors search in natural language, with advanced filters and categories.', 'search'],
+          ['Interactive property map', 'Explore available properties on a map and open the ones that fit.', 'map'],
+          ['Favourites and comparison', 'Save properties and compare them before contacting the office.', 'heart'],
+          ['Enquiry matching', 'Requests are matched to available properties and organised for follow-up.', 'git-compare'],
+          ['10 languages and SEO', 'A multilingual presentation with optimised photos and technical SEO.', 'globe'],
+        ],
+        pricingEyebrow: 'Build pricing',
+        pricingTitle: 'Get your own real estate website',
+        pricingLead:
+          'Two options for building and customising your real estate website, with ongoing maintenance and technical support.',
+        setupLabel: 'one-time build',
+        monthlyLabel: '/month maintenance',
+        includesTitle: 'What the monthly maintenance includes',
+        footnote:
+          'Prices exclude VAT. Any domain, hosting and third-party charges are clarified in the quote. Additional features and custom requirements are priced separately.',
+        transferTitle: 'We also handle transferring your properties',
+        processEyebrow: 'How we work',
+        processTitle: 'A clear process, from the first call to launch',
+        process: [
+          ['Discussion and quote', 'We define needs, content and the right package before any work starts.'],
+          ['Content and design', 'We organise your properties, texts, photos and the identity of your office.'],
+          ['Build and checks', 'The website is built, tested on mobile and desktop, and reviewed with you.'],
+          ['Launch and support', 'The site goes live and ongoing support continues with the maintenance plan.'],
+        ],
+        faqEyebrow: 'Questions',
+        faqTitle: 'What agencies usually ask',
+        faq: [
+          ['How much does it cost?', 'Construction starts at €990 for the first three agencies and €1,490 at the standard price, with €69 or €89 per month maintenance respectively. Prices exclude VAT and the final quote depends on the features you need.'],
+          ['How long does it take?', 'It depends on the content, photos and features. The timeline is agreed in the quote before any work starts.'],
+          ['Can you transfer our existing listings?', 'Yes, optionally and by arrangement. We can transfer descriptions, features and photos so you do not have to enter everything manually.'],
+          ['Does it support Greek and English?', 'Yes. The system supports 10 languages, including Greek and English.'],
+          ['Do I need technical knowledge?', 'No. You manage the website from the admin panel, and I provide training and support.'],
+        ],
+        ctaTitle: 'Want a website like this for your agency?',
+        ctaText:
+          'Upgrade your agency’s online presence with a specialised property management and showcase system, tailored to your brand.',
+        ctaButton: 'Request a quote',
+        ctaCall: 'Call',
+        ctaEmail: 'Email',
+      }
+    : {
+        title: 'Κατασκευή μεσιτικής ιστοσελίδας | EazyFix',
+        description:
+          'Κατασκευή ιστοσελίδων για μεσιτικά γραφεία με διαχείριση αγγελιών, έξυπνη αναζήτηση, χάρτη και αντιστοίχιση αιτημάτων. Δείτε πραγματικό έργο και τιμές.',
+        eyebrow: 'Για μεσιτικά γραφεία',
+        h1: 'Μεσιτική ιστοσελίδα που οργανώνει το γραφείο, όχι μόνο το παρουσιάζει',
+        lead:
+          'Ένα ολοκληρωμένο σύστημα για την προβολή ακινήτων, τη διαχείριση αγγελιών και την οργάνωση αιτημάτων — στα μέτρα του γραφείου σας, με υποστήριξη μετά την παράδοση.',
+        quote: 'Ζητήστε προσφορά',
+        live: 'Δείτε το πραγματικό site',
+        demo: 'Δοκιμάστε τη διαχείριση',
+        facts: ['Πραγματικό έργο σε λειτουργία', '10 γλώσσες', 'Admin panel'],
+        proofEyebrow: 'Πραγματικό έργο',
+        proofTitle: 'Φτιαγμένο για γραφείο, σε καθημερινή χρήση',
+        proofText:
+          'Η ιστοσελίδα της Ρίτας Σαμοθράκη συνδυάζει την προβολή ακινήτων με σύστημα διαχείρισης: αγγελίες και φωτογραφίες, έξυπνη αναζήτηση, χάρτη, αγαπημένα, σύγκριση και αντιστοίχιση αιτημάτων.',
+        proofPoints: [
+          'Αγγελίες, φωτογραφίες και περιεχόμενο από το admin panel',
+          'Έξυπνη αναζήτηση, φίλτρα, διαδραστικός χάρτης και σύγκριση',
+          'Αντιστοίχιση αιτημάτων και προτάσεις email σε 10 γλώσσες',
+        ],
+        proofLink: 'Δείτε τις λεπτομέρειες του project',
+        featuresEyebrow: 'Τι περιλαμβάνει',
+        featuresTitle: 'Όλα όσα χρειάζεται ένα μεσιτικό γραφείο',
+        featuresLead: 'Σχεδιασμένο για την καθημερινή εργασία του γραφείου, όχι μόνο για την αρχική σελίδα.',
+        features: [
+          ['Διαχείριση αγγελιών και φωτογραφιών', 'Προσθήκη, επεξεργασία και οργάνωση ακινήτων και φωτογραφιών από το admin panel.', 'layout'],
+          ['Έξυπνη αναζήτηση ακινήτων', 'Ο επισκέπτης αναζητά με φυσική γλώσσα, προηγμένα φίλτρα και κατηγορίες.', 'search'],
+          ['Διαδραστικός χάρτης', 'Προβολή των διαθέσιμων ακινήτων στον χάρτη και άνοιγμα όσων ταιριάζουν.', 'map'],
+          ['Αγαπημένα και σύγκριση', 'Αποθήκευση ακινήτων και σύγκριση πριν από την επικοινωνία με το γραφείο.', 'heart'],
+          ['Αντιστοίχιση αιτημάτων', 'Τα αιτήματα αντιστοιχίζονται με διαθέσιμα ακίνητα και οργανώνονται για follow-up.', 'git-compare'],
+          ['10 γλώσσες και SEO', 'Πολυγλωσσική παρουσίαση με βελτιστοποιημένες φωτογραφίες και τεχνική υποδομή SEO.', 'globe'],
+        ],
+        pricingEyebrow: 'Τιμοκατάλογος κατασκευής',
+        pricingTitle: 'Αποκτήστε τη δική σας μεσιτική ιστοσελίδα',
+        pricingLead:
+          'Δύο επιλογές για την κατασκευή και παραμετροποίηση της μεσιτικής σας ιστοσελίδας, με συνεχή συντήρηση και τεχνική υποστήριξη.',
+        setupLabel: 'εφάπαξ κατασκευή',
+        monthlyLabel: '/μήνα συντήρηση',
+        includesTitle: 'Τι περιλαμβάνει η μηνιαία συντήρηση',
+        footnote:
+          'Οι τιμές δεν περιλαμβάνουν ΦΠΑ. Τυχόν χρεώσεις domain, φιλοξενίας και υπηρεσιών τρίτων διευκρινίζονται κατά την προσφορά. Πρόσθετες λειτουργίες και εξατομικευμένες απαιτήσεις κοστολογούνται ξεχωριστά.',
+        transferTitle: 'Αναλαμβάνουμε και τη μεταφορά των ακινήτων σας',
+        processEyebrow: 'Πώς δουλεύουμε',
+        processTitle: 'Καθαρή διαδικασία, από το πρώτο τηλέφωνο μέχρι την παράδοση',
+        process: [
+          ['Συζήτηση και προσφορά', 'Ορίζουμε ανάγκες, περιεχόμενο και το κατάλληλο πακέτο πριν ξεκινήσει οποιαδήποτε εργασία.'],
+          ['Περιεχόμενο και σχεδιασμός', 'Οργανώνουμε ακίνητα, κείμενα, φωτογραφίες και την ταυτότητα του γραφείου σας.'],
+          ['Κατασκευή και έλεγχοι', 'Η ιστοσελίδα χτίζεται, ελέγχεται σε κινητό και υπολογιστή και τη βλέπουμε μαζί.'],
+          ['Παράδοση και υποστήριξη', 'Η σελίδα βγαίνει σε λειτουργία και η υποστήριξη συνεχίζεται με το πρόγραμμα συντήρησης.'],
+        ],
+        faqEyebrow: 'Απορίες',
+        faqTitle: 'Τι ρωτούν συνήθως τα μεσιτικά γραφεία',
+        faq: [
+          ['Πόσο κοστίζει;', 'Η κατασκευή ξεκινά από 990 € για τα πρώτα 3 μεσιτικά γραφεία και 1.490 € στην κανονική τιμή, με 69 € ή 89 €/μήνα συντήρηση αντίστοιχα. Οι τιμές δεν περιλαμβάνουν ΦΠΑ και η τελική προσφορά εξαρτάται από τις λειτουργίες που χρειάζεστε.'],
+          ['Πόσο χρόνο διαρκεί;', 'Εξαρτάται από το περιεχόμενο, τις φωτογραφίες και τις λειτουργίες. Η διάρκεια ορίζεται στην προσφορά πριν ξεκινήσει η εργασία.'],
+          ['Μπορείτε να μεταφέρετε τις αγγελίες μου;', 'Ναι, προαιρετικά και κατόπιν συνεννόησης. Αναλαμβάνουμε περιγραφές, χαρακτηριστικά και φωτογραφίες, ώστε να μη χρειάζεται χειροκίνητη καταχώριση.'],
+          ['Υποστηρίζει ελληνικά και αγγλικά;', 'Ναι. Το σύστημα υποστηρίζει 10 γλώσσες, μεταξύ των οποίων ελληνικά και αγγλικά.'],
+          ['Χρειάζομαι τεχνικές γνώσεις;', 'Όχι. Η διαχείριση γίνεται από το admin panel και αναλαμβάνω την εκπαίδευση και την υποστήριξη.'],
+        ],
+        ctaTitle: 'Θέλετε μια αντίστοιχη ιστοσελίδα για το μεσιτικό σας γραφείο;',
+        ctaText:
+          'Αναβαθμίστε την ηλεκτρονική παρουσία του γραφείου σας με ένα εξειδικευμένο σύστημα διαχείρισης και προβολής ακινήτων, προσαρμοσμένο στην επωνυμία σας.',
+        ctaButton: 'Ζητήστε προσφορά',
+        ctaCall: 'Κλήση',
+        ctaEmail: 'Email',
+      };
+
+const contactHref = locale === 'en' ? '/en/?service=real-estate#contact' : '/el/?service=real-estate#contact';
+const siteHref = project?.url ?? 'https://realestate-samothraki.gr/';
+const demoHref = '/demo/rita-admin';
+const projectHref = locale === 'en' ? '/en/projects/rita-samothraki' : '/projects/rita-samothraki';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: locale === 'en' ? 'Real estate website development' : 'Κατασκευή μεσιτικής ιστοσελίδας',
+  serviceType: locale === 'en' ? 'Website development for real estate agencies' : 'Κατασκευή ιστοσελίδων για μεσιτικά γραφεία',
+  description: copy.description,
+  url: locale === 'en' ? 'https://eazyfix.gr/en/meisitika' : 'https://eazyfix.gr/meisitika',
+  provider: { '@type': 'Organization', name: 'EazyFix', url: 'https://eazyfix.gr' },
+  areaServed: { '@type': 'Country', name: 'Greece' },
+  offers: plans.map((plan) => ({
+    '@type': 'Offer',
+    name: plan.name[locale],
+    price: plan.setup.replace(/[^\d]/g, ''),
+    priceCurrency: 'EUR',
+    availability: 'https://schema.org/InStock',
+  })),
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: copy.faq.map(([question, answer]) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+};
+const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
+const faqLdText = JSON.stringify(faqLd).replace(/</g, '\\u003c');
+---
+
+<Layout title={copy.title} description={copy.description} locale={locale} business={business}>
+  <section class="landing-hero">
+    <div class="landing-glow" aria-hidden="true"></div>
+    <div class="container landing-hero-inner">
+      <span class="landing-eyebrow">{copy.eyebrow}</span>
+      <h1>{copy.h1}</h1>
+      <p class="landing-lead">{copy.lead}</p>
+      <div class="landing-actions">
+        <a class="btn btn--primary" href={contactHref}>{copy.quote}<Icon name="arrow-right" size={17} /></a>
+        <a class="btn btn--ghost-light" href={siteHref} target="_blank" rel="noopener">{copy.live}<Icon name="external-link" size={16} /></a>
+        <a class="btn btn--ghost-light landing-demo" href={demoHref}>{copy.demo}<Icon name="layout" size={16} /></a>
+      </div>
+      <ul class="landing-facts">
+        {copy.facts.map((fact) => <li><Icon name="check" size={14} />{fact}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="landing-proof">
+    <div class="container proof-grid">
+      <div class="proof-visual">
+        <div class="proof-frame">
+          {shot ? <img src={shot} alt={project?.name ?? 'Real estate website'} /> : <div class="proof-placeholder"><Icon name="building" size={42} /></div>}
+        </div>
+        <span class="proof-badge"><span></span>{locale === 'en' ? 'Live project' : 'Σε λειτουργία'}</span>
+      </div>
+      <div class="proof-copy">
+        <span class="eyebrow">{copy.proofEyebrow}</span>
+        <h2 class="h2">{copy.proofTitle}</h2>
+        <p class="lead">{copy.proofText}</p>
+        <ul class="proof-points">
+          {copy.proofPoints.map((point) => <li><span><Icon name="check" size={13} /></span>{point}</li>)}
+        </ul>
+        <a class="proof-link" href={projectHref}>{copy.proofLink}<Icon name="arrow-right" size={15} /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">{copy.featuresEyebrow}</span>
+        <h2 class="h2">{copy.featuresTitle}</h2>
+        <p class="lead">{copy.featuresLead}</p>
+      </div>
+      <div class="landing-features">
+        {copy.features.map(([title, text, iconName]) => (
+          <article class="landing-feature">
+            <span class="feature-icon"><Icon name={iconName} size={21} /></span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {pricing && plans.length > 0 && (
+    <section class="landing-section landing-soft" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          {pricing.eyebrow?.[locale] && <span class="eyebrow">{pricing.eyebrow[locale]}</span>}
+          <h2 class="h2">{copy.pricingTitle}</h2>
+          <p class="lead">{copy.pricingLead}</p>
+        </div>
+        <div class="landing-pricing">
+          {plans.map((plan) => (
+            <article class:list={['landing-plan', { 'landing-plan--featured': plan.highlight }]}>
+              {plan.badge?.[locale] && <span class="plan-badge">{plan.badge[locale]}</span>}
+              <h3>{plan.name[locale]}</h3>
+              <div class="plan-price"><strong>{plan.setup}</strong><span>{copy.setupLabel}</span></div>
+              <div class="plan-monthly"><strong>{plan.monthly}</strong><span>{copy.monthlyLabel}</span></div>
+              {plan.note?.[locale] && <p class="plan-note">{plan.note[locale]}</p>}
+            </article>
+          ))}
+        </div>
+        {pricing.includes?.[locale]?.length > 0 && (
+          <div class="plan-includes">
+            <h3>{copy.includesTitle}</h3>
+            <ul>
+              {pricing.includes[locale].map((item) => <li><span><Icon name="check" size={13} /></span>{item}</li>)}
+            </ul>
+          </div>
+        )}
+        <p class="plan-footnote">{copy.footnote}</p>
+      </div>
+    </section>
+  )}
+
+  {service && (
+    <section class="landing-section">
+      <div class="container">
+        <div class="landing-transfer">
+          <span class="transfer-icon"><Icon name="truck" size={27} /></span>
+          <div>
+            <h2 class="h3">{service.title[locale]}</h2>
+            <p>{service.body[locale]}</p>
+            <strong>{service.priceLabel[locale]}</strong>
+            {service.note && <small>{service.note[locale]}</small>}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="landing-section landing-soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">{copy.processEyebrow}</span>
+        <h2 class="h2">{copy.processTitle}</h2>
+      </div>
+      <ol class="landing-process">
+        {copy.process.map(([title, text], index) => (
+          <li>
+            <span class="process-number">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="landing-section" id="faq">
+    <div class="container faq-wrap">
+      <div class="section-head">
+        <span class="eyebrow">{copy.faqEyebrow}</span>
+        <h2 class="h2">{copy.faqTitle}</h2>
+      </div>
+      <div class="landing-faq">
+        {copy.faq.map(([question, answer], index) => (
+          <details open={index === 0}>
+            <summary>{question}<span aria-hidden="true">+</span></summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-cta" id="quote">
+    <div class="container landing-cta-inner">
+      <div>
+        <h2>{copy.ctaTitle}</h2>
+        <p>{copy.ctaText}</p>
+        <div class="landing-contact">
+          <a href={`tel:${business.phone}`}><Icon name="phone" size={16} />{business.phone}</a>
+          <a href={`mailto:${business.email}`}><Icon name="mail" size={16} />{business.email}</a>
+        </div>
+      </div>
+      <a class="btn btn--primary" href={contactHref}>{copy.ctaButton}<Icon name="arrow-right" size={17} /></a>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={jsonLdText} />
+  <script type="application/ld+json" set:html={faqLdText} />
+</Layout>
+
+<style>
+  .landing-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 92px 0 76px;
+    background: var(--ink);
+    color: #fff;
+    text-align: center;
+  }
+
+  .landing-glow {
+    position: absolute;
+    inset: -50% 0 auto 0;
+    height: 620px;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.35), transparent 62%);
+  }
+
+  .landing-hero-inner {
+    position: relative;
+    max-width: 900px;
+  }
+
+  .landing-eyebrow {
+    color: #a5b4fc;
+  }
+
+  .landing-hero h1 {
+    margin: 18px auto 0;
+    color: #fff;
+    font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  .landing-lead {
+    margin: 22px auto 0;
+    max-width: 62ch;
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .landing-actions {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 11px;
+  }
+
+  .btn--ghost-light {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+  }
+
+  .btn--ghost-light:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .landing-demo {
+    border-color: rgba(103, 232, 249, 0.4);
+    background: rgba(103, 232, 249, 0.08);
+    color: #e0f2fe;
+  }
+
+  .landing-facts {
+    margin: 34px 0 0;
+    padding: 22px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 26px;
+    list-style: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    font-size: 0.86rem;
+  }
+
+  .landing-facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .landing-facts svg {
+    color: #67e8f9;
+  }
+
+  .landing-proof {
+    padding: 80px 0;
+    background: var(--bg-soft);
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 56px;
+    align-items: center;
+  }
+
+  .proof-visual {
+    position: relative;
+  }
+
+  .proof-frame {
+    overflow: hidden;
+    border: 1px solid #dbe3ec;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 30px 70px -35px rgba(15, 23, 42, 0.4);
+    aspect-ratio: 16 / 10.5;
+  }
+
+  .proof-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .proof-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--primary);
+    background: linear-gradient(150deg, var(--primary-50), #fff);
+  }
+
+  .proof-badge {
+    position: absolute;
+    right: 18px;
+    bottom: -15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid #dce7e1;
+    border-radius: 999px;
+    background: #fff;
+    color: #287a5b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    box-shadow: 0 12px 30px -18px rgba(15, 23, 42, 0.5);
+  }
+
+  .proof-badge span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #34a07a;
+    box-shadow: 0 0 0 4px rgba(52, 160, 122, 0.16);
+  }
+
+  .proof-copy h2 {
+    margin-top: 14px;
+  }
+
+  .proof-points {
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 11px;
+  }
+
+  .proof-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+  }
+
+  .proof-points span {
+    width: 21px;
+    height: 21px;
+    margin-top: 1px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--primary-50);
+    color: var(--primary);
+  }
+
+  .proof-link {
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .proof-link:hover {
+    text-decoration: underline;
+  }
+
+  .landing-section {
+    padding: 86px 0;
+  }
+
+  .landing-soft {
+    background: var(--bg-soft);
+  }
+
+  .landing-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .landing-feature {
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: var(--primary-50);
+    color: var(--primary);
+  }
+
+  .landing-feature h3 {
+    margin: 16px 0 7px;
+    font-family: var(--font-head);
+    font-size: 1.02rem;
+  }
+
+  .landing-feature p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .landing-pricing {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .landing-plan {
+    position: relative;
+    padding: 30px 28px 26px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg-soft);
+  }
+
+  .landing-plan--featured {
+    border-color: var(--primary);
+    background: linear-gradient(180deg, var(--primary-50), #fff 72%);
+    box-shadow: 0 14px 34px -20px rgba(79, 70, 229, 0.5);
+  }
+
+  .plan-badge {
+    position: absolute;
+    top: -11px;
+    left: 24px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .landing-plan h3 {
+    font-size: 1.05rem;
+    margin-bottom: 18px;
+  }
+
+  .plan-price,
+  .plan-monthly {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .plan-price strong {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .plan-price span,
+  .plan-monthly span {
+    color: var(--muted);
+    font-size: 0.86rem;
+  }
+
+  .plan-monthly {
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .plan-monthly strong {
+    font-family: var(--font-head);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .plan-note {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  .plan-includes {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .plan-includes h3 {
+    font-size: 0.98rem;
+    margin-bottom: 14px;
+  }
+
+  .plan-includes ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+  }
+
+  .plan-includes li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+  }
+
+  .plan-includes li span {
+    width: 21px;
+    height: 21px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--primary-50);
+    color: var(--primary);
+  }
+
+  .plan-footnote {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .landing-transfer {
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+    padding: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-soft);
+  }
+
+  .transfer-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--primary);
+  }
+
+  .landing-transfer h2 {
+    margin-bottom: 9px;
+  }
+
+  .landing-transfer p {
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+  }
+
+  .landing-transfer strong {
+    display: block;
+    margin-top: 12px;
+    color: var(--ink);
+  }
+
+  .landing-transfer small {
+    display: block;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+
+  .landing-process {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .landing-process li {
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    background: #fff;
+  }
+
+  .process-number {
+    color: var(--primary);
+    font-family: var(--font-head);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .landing-process h3 {
+    margin: 11px 0 6px;
+    font-family: var(--font-head);
+    font-size: 0.98rem;
+  }
+
+  .landing-process p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .faq-wrap {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .faq-wrap .section-head {
+    margin-bottom: 0;
+  }
+
+  .landing-faq {
+    display: grid;
+    gap: 10px;
+  }
+
+  .landing-faq details {
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .landing-faq summary {
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .landing-faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .landing-faq summary span {
+    color: var(--primary);
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+  }
+
+  .landing-faq details[open] summary span {
+    transform: rotate(45deg);
+  }
+
+  .landing-faq p {
+    padding: 0 18px 17px;
+    color: var(--muted);
+    font-size: 0.91rem;
+    line-height: 1.65;
+  }
+
+  .landing-cta {
+    padding: 64px 0;
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .landing-cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .landing-cta h2 {
+    color: #fff;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    margin-bottom: 10px;
+  }
+
+  .landing-cta p {
+    color: #cbd5e1;
+    max-width: 64ch;
+  }
+
+  .landing-contact {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .landing-contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .landing-contact a:hover {
+    color: #fff;
+  }
+
+  @media (max-width: 980px) {
+    .proof-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .proof-badge {
+      bottom: 14px;
+      right: 14px;
+    }
+
+    .landing-features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .landing-process {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .faq-wrap {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .landing-hero {
+      padding: 68px 0 56px;
+    }
+
+    .landing-proof,
+    .landing-section {
+      padding: 64px 0;
+    }
+
+    .landing-pricing,
+    .landing-process {
+      grid-template-columns: 1fr;
+    }
+
+    .landing-cta-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .landing-cta .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .landing-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .landing-features {
+      grid-template-columns: 1fr;
+    }
+
+    .plan-includes ul {
+      grid-template-columns: 1fr;
+    }
+
+    .landing-transfer {
+      flex-direction: column;
+    }
+  }
+</style>

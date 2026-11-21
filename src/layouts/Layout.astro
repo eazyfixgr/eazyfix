@@ -63,6 +63,18 @@ const absolute = (value: string | undefined, fallback: string): string => {
   return /^https?:\/\//.test(target) ? target : new URL(target, siteOrigin).href;
 };
 const canonical = new URL(Astro.url.pathname, siteOrigin).href;
+const currentPath = Astro.url.pathname;
+const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
+const elPath = isEnglish
+  ? currentPath === '/en' || currentPath === '/en/'
+    ? '/el/'
+    : currentPath.replace(/^\/en/, '')
+  : currentPath;
+const enPath = isEnglish
+  ? currentPath
+  : currentPath === '/' || currentPath === '/el/'
+    ? '/en/'
+    : `/en${currentPath}`;
 const ogImage = absolute(image ?? branding.ogImage, '/og.png');
 const faviconHref = branding.favicon || '/favicon.svg';
 const faviconType = faviconHref.endsWith('.svg') ? 'image/svg+xml' : undefined;
@@ -78,9 +90,9 @@ const siteName = business?.name ?? 'EazyFix';
     <meta name="theme-color" content="#0b1120" />
     <title>{title}</title>
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="el" href={new URL('/el/', siteOrigin)} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/', siteOrigin)} />
-    <link rel="alternate" hreflang="x-default" href={new URL('/el/', siteOrigin)} />
+    <link rel="alternate" hreflang="el" href={new URL(elPath, siteOrigin)} />
+    <link rel="alternate" hreflang="en" href={new URL(enPath, siteOrigin)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(elPath, siteOrigin)} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
@@ -161,6 +173,7 @@ const siteName = business?.name ?? 'EazyFix';
             <h4>{locale === 'en' ? 'Navigation' : 'Πλοήγηση'}</h4>
             <a href="#work">{t.work}</a>
             <a href="#about">{t.about}</a>
+            <a href={locale === 'en' ? '/en/meisitika' : '/meisitika'}>{locale === 'en' ? 'Real estate websites' : 'Μεσιτικές ιστοσελίδες'}</a>
             <a href={locale === 'en' ? '/en/templates' : '/templates'}>{t.templates}</a>
             <a href="#contact">{t.contact}</a>
           </div>
